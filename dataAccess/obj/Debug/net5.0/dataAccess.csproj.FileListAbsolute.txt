@@ -1,0 +1,15 @@
+/home/carlos/Documents/coding/react/ElectronicManageSystem/dataAccess/bin/Debug/net5.0/dataAccess.deps.json
+/home/carlos/Documents/coding/react/ElectronicManageSystem/dataAccess/bin/Debug/net5.0/dataAccess.dll
+/home/carlos/Documents/coding/react/ElectronicManageSystem/dataAccess/bin/Debug/net5.0/ref/dataAccess.dll
+/home/carlos/Documents/coding/react/ElectronicManageSystem/dataAccess/bin/Debug/net5.0/dataAccess.pdb
+/home/carlos/Documents/coding/react/ElectronicManageSystem/dataAccess/obj/Debug/net5.0/dataAccess.csproj.AssemblyReference.cache
+/home/carlos/Documents/coding/react/ElectronicManageSystem/dataAccess/obj/Debug/net5.0/dataAccess.GeneratedMSBuildEditorConfig.editorconfig
+/home/carlos/Documents/coding/react/ElectronicManageSystem/dataAccess/obj/Debug/net5.0/dataAccess.AssemblyInfoInputs.cache
+/home/carlos/Documents/coding/react/ElectronicManageSystem/dataAccess/obj/Debug/net5.0/dataAccess.AssemblyInfo.cs
+/home/carlos/Documents/coding/react/ElectronicManageSystem/dataAccess/obj/Debug/net5.0/dataAccess.csproj.CoreCompileInputs.cache
+/home/carlos/Documents/coding/react/ElectronicManageSystem/dataAccess/obj/Debug/net5.0/dataAccess.dll
+/home/carlos/Documents/coding/react/ElectronicManageSystem/dataAccess/obj/Debug/net5.0/ref/dataAccess.dll
+/home/carlos/Documents/coding/react/ElectronicManageSystem/dataAccess/obj/Debug/net5.0/dataAccess.pdb
+/home/carlos/Documents/coding/react/ElectronicManageSystem/dataAccess/bin/Debug/net5.0/dataAccess.runtimeconfig.json
+/home/carlos/Documents/coding/react/ElectronicManageSystem/dataAccess/bin/Debug/net5.0/dataAccess.runtimeconfig.dev.json
+/home/carlos/Documents/coding/react/ElectronicManageSystem/dataAccess/obj/Debug/net5.0/dataAccess.genruntimeconfig.cache
