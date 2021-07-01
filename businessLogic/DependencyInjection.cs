@@ -11,6 +11,7 @@ namespace businessLogic
         public static IServiceCollection AddRepository(this IServiceCollection services)
         {
             services.AddTransient<IClientsRepository,ClientsRepository>();
+            services.AddTransient<IUsersRepository,UsersRespository>();
             services.AddTransient<IUnitOfWork,UnitOfWork>();
             
             return services;

@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faSearch} from '@fortawesome/free-solid-svg-icons';
 
-function App() {
+function GridClients() {
   const [clientes,setClientes]=useState([]);
   const [tablaClientes,setTablaClientes]=useState([]);
   const [busqueda,setBusqueda]=useState("");

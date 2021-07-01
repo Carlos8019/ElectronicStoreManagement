@@ -7,10 +7,12 @@ namespace businessLogic
     {
         private readonly EsDbContext _context;
         public IClientsRepository Clients{get;}
-        public UnitOfWork(EsDbContext context,IClientsRepository clients)
+        public IUsersRepository Users{get;}
+        public UnitOfWork(EsDbContext context,IClientsRepository clients,IUsersRepository users)
         {
             this.Clients=clients;
             this._context=context;
+            this.Users=users;
         }
 
         public void Dispose()
