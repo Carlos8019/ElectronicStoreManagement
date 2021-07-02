@@ -77,4 +77,4 @@ function GridClients() {
   );
 }
 
-export default App;
+export default GridClients;
