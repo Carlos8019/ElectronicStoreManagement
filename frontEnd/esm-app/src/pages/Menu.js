@@ -7,6 +7,7 @@ import Login from'../pages/Login';
 import {NavLink} from 'react-router-dom';
 import * as FaIcons from 'react-icons/fa';
 import Routes from '../routes/Routes';
+import { Link } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -24,7 +25,7 @@ export default function Menu() {
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <MenuList>
-          <MenuItem>Registro de Clientes</MenuItem>
+          <MenuItem><NavLink to="/menu/addclient">Registro de Clientes</NavLink></MenuItem>
           <MenuItem>Registro de Productos</MenuItem>
           <MenuItem>Registro de Ventas</MenuItem>
           <MenuItem>Registro de Usuarios</MenuItem>
