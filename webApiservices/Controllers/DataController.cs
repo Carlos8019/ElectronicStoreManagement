@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using businessLogic.interfaces;
 using System.Collections.Generic;
 using System.Linq;
+using businessLogic.DTO;
 
 namespace webApiservices.Controllers
 {
@@ -20,7 +21,7 @@ namespace webApiservices.Controllers
             var result=_unitOfWork.Clients.GetAllClients();
             return Ok(result);            
         }
-        [HttpGet("validateLogin")]
+        [HttpGet("validateLogin/{userName}/{password}")]
         public IActionResult validateLogin(string userName,string password)
         {
             var result=_unitOfWork.Users.ValidateClient(userName,password).ToList();
@@ -28,6 +29,11 @@ namespace webApiservices.Controllers
                 return Ok(1);
             else 
                 return BadRequest(0);
+        }
+        [HttpPost("saveClient")]
+        public IActionResult saveClient([FromBody]ClientDTO dto )
+        {
+            return Ok(1);
         }
     }
 }

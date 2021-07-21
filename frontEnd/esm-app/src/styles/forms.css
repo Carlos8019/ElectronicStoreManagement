@@ -33,3 +33,9 @@
     border-radius: 8px;
     cursor: pointer;
   }
+  .create button:disabled,
+    button[disabled]
+    {  
+      opacity: 0.65; 
+      cursor: not-allowed;
+    }
