@@ -1,5 +1,9 @@
 //import React from 'react';
-function Storage(itemName, itemValue){
+function SetStorage(itemName, itemValue){
     localStorage.setItem(itemName,itemValue);
 }
-export default Storage;
+const GetStorage=(itemName)=>{
+    return localStorage.getItem(itemName);
+}
+export default SetStorage;
+export {GetStorage};

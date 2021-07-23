@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import sha256 from 'js-sha256';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/login.css';
-import Storage from '../utilities/Storage';
+import SetStorage from '../utilities/Storage';
 import login from '../utilities/ApiService';
+import UserContext from '../contexts/UserContext';
 function Login(props){
+    const {logUser}=useContext(UserContext);
     const [resultadoLogin,setResultadoLogin]=useState("");
     const [form,setForm]=useState({
         username: '',
@@ -18,25 +20,27 @@ function Login(props){
         });
     }
     const handleLogin=async()=>{
-        const result=login(form.username,sha256(form.password));
+        //const result=login(form.username,sha256(form.password));
+        const result={data :'1'};
+        console.log("data",result);
         if(result.data)        
         {
             if(result.data==='1')
             {
-               Storage('userName',form.username);
+               SetStorage('userName',form.username);
                setResultadoLogin("Autorizado");
+               //{logUser}
                props.history.push('/menu');
             } 
             else
             {
-                Storage('userName',null);
+                SetStorage('userName',null);
                 setResultadoLogin("Nombre de usuario o contraseña incorrectos");
             }
         }
         else
         {
             setResultadoLogin("Error al conectarse");
-            props.history.push('/menu');
         }
     }
 

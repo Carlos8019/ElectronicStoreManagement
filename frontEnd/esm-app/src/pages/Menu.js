@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
@@ -8,6 +8,7 @@ import {NavLink} from 'react-router-dom';
 import * as FaIcons from 'react-icons/fa';
 import Routes from '../routes/Routes';
 import { Link } from '@material-ui/core';
+import UserContext from '../contexts/UserContext';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -19,7 +20,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Menu() {
   const classes = useStyles();
-
+  const {user,logout}=useContext(UserContext);
+  console.log("menu",user);
   return (
     <div>
     <div className={classes.root}>
@@ -31,7 +33,7 @@ export default function Menu() {
           <MenuItem>Registro de Usuarios</MenuItem>
           <MenuItem>Registro de Asignaciones</MenuItem>
           <MenuItem>Agenda</MenuItem>
-          <MenuItem ><NavLink to="/" activeClassName="active" >Salir</NavLink></MenuItem>
+          <MenuItem ><NavLink onClick={logout} to="/" activeClassName="active" >Salir</NavLink></MenuItem>
         </MenuList>
       </Paper>
       <div>
