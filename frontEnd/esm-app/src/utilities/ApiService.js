@@ -1,8 +1,8 @@
 import axios from 'axios';
 const baseURL="https://localhost:5001/Data/";
 export default async function login(userName,password){
-    let result;
-    await axios.get(baseURL+`validateLogin/${userName}/${password}`)
+    return await axios.get(baseURL+`validateLogin/${userName}/${password}`);
+    /*
     .then(response=>{
         result=response.data;
       }
@@ -11,4 +11,5 @@ export default async function login(userName,password){
         result=error;
     })
     return result;
+    */
 }

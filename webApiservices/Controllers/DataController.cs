@@ -28,7 +28,7 @@ namespace webApiservices.Controllers
             if(result.Any())
                 return Ok(1);
             else 
-                return BadRequest(0);
+                return Ok(0);
         }
         [HttpPost("saveClient")]
         public IActionResult saveClient([FromBody]ClientDTO dto )
