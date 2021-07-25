@@ -3,6 +3,7 @@
     max-width: 400px;
     margin: 0 auto;
     text-align: center;
+    float: initial;
   }
   
   .create label {
@@ -25,7 +26,7 @@
     display: block;
   }
   
-  .create button {
+  .create button{
     background: #f1356d;
     color: #fff;
     border: 0;

@@ -25,7 +25,7 @@ const UserProvider = ({ children }) => {
                     if (response.data === 1) {
                         console.log("correcto");
                         setUser(form.username);
-                        props.history.push('/menu');
+                        props.history.push('/blank');
                     }
                     else {
                         setLoginMessage("Nombre de usuario o contraseña incorrectos");;

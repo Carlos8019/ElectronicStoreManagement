@@ -12,6 +12,7 @@ import UserContext from '../contexts/UserContext';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
+    float:'left'
   },
   paper: {
     marginRight: theme.spacing(2),
