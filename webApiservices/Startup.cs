@@ -38,7 +38,8 @@ namespace webApiservices
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "webApiservices", Version = "v1" });
             });
             //services.AddDbContextPool<EsDbContext>(opt=>opt.UseInMemoryDatabase("TEST"));
-            services.AddDbContextPool<EsDbContext>(opt=>opt.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContextPool<EsDbContext>(opt=>opt.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
+                                                    new MySqlServerVersion(new Version(8, 0, 25))));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -14,11 +14,13 @@ namespace businessLogic.Repositories
         public bool AddClient(Clients client)
         {
             bool result=false;
+            /*
             _context.Add(client);
             var validation=_context.save().result;
             if(validation==1)
                 result=true;
-            retun result;
+                */
+            return result;
         }
 
         public IEnumerable<Clients> GetAllClients()
