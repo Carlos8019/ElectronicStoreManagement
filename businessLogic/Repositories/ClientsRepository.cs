@@ -11,6 +11,16 @@ namespace businessLogic.Repositories
         public ClientsRepository(EsDbContext context):base(context)
         {
         }
+        public bool AddClient(Clients client)
+        {
+            bool result=false;
+            _context.Add(client);
+            var validation=_context.save().result;
+            if(validation==1)
+                result=true;
+            retun result;
+        }
+
         public IEnumerable<Clients> GetAllClients()
         {
             List<Clients> result=new List<Clients>();

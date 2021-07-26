@@ -5,7 +5,6 @@ import postData from '../utilities/ApiServicePost';
 
 const ClientContext = createContext();
 const ClientProvider = ({ children }) => {
-
     const [enableButton, setEnableButton] = useState(true);
     const [name, setname] = useState('');
     const [phone, setphone] = useState('');
@@ -13,6 +12,10 @@ const ClientProvider = ({ children }) => {
     const [email, setemail] = useState('');
     const [errorEmail, setErrorEmail] = useState('');
     const [messageForm, setMessageForm] = useState("");
+    const [modal, setModal] = useState(false);
+    const handleAdd = () => {
+        setModal(!modal);
+    }    
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(name, " ", phone, " ", email, " ", address);
@@ -26,9 +29,14 @@ const ClientProvider = ({ children }) => {
                 .then((response) => {
                     if (response.data) {
                         if (response.data === 1)
+                        {
                             setMessageForm("Cliente Agregado");
+                            handleAdd();
+                        }
                         else
+                        {
                             setMessageForm("Error al crear el cliente");
+                        }
                     }
                     else
                         setMessageForm("Error al crear el cliente");
@@ -65,7 +73,13 @@ const ClientProvider = ({ children }) => {
             validateEmail(e.target.value);
 
     }
-    const data={name,address,phone,email,enableButton,errorEmail,messageForm,handleSubmit,handleChange,setErrorEmail,setMessageForm,setEnableButton}
+    const cleanFields=()=>{
+        setname("");
+        setphone("");
+        setaddress("");
+        setemail("");
+    }
+    const data={name,address,phone,email,enableButton,errorEmail,messageForm,modal,handleSubmit,handleChange,setErrorEmail,setMessageForm,setEnableButton,handleAdd,cleanFields}
     return (
         <ClientContext.Provider value={data}>
             {children}

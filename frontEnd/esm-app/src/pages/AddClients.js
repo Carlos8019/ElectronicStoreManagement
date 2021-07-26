@@ -5,11 +5,7 @@ import GridClients from './GridClients';
 import FormClients from './FormClients';
 import ClientContext, { ClientProvider } from '../contexts/ClientContext';
 function AddClients() {
-    const {enableButton,handleSubmit}=useContext(ClientContext);
-    const [modal, setModal] = useState(false);
-    const handleAdd = () => {
-        setModal(!modal);
-    }
+    const { enableButton, handleSubmit, handleAdd, modal } = useContext(ClientContext);
     return (
         <>
             <div className="create">
@@ -22,8 +18,16 @@ function AddClients() {
                 <ModalBody><FormClients /></ModalBody>
                 <ModalFooter>
                     <div className="create">
-                        <button onClick={() => handleAdd()}>Cancelar</button>
-                        <button disabled={enableButton} onClick={(e) => handleSubmit(e)}>Agregar Cliente</button>
+                        <table>
+                            <tr>
+                                <td>
+                                    <button onClick={() => handleAdd()}>Cancelar</button>
+                                </td>
+                                <td>
+                                    <button disabled={enableButton} onClick={(e) => handleSubmit(e)}>Agregar Cliente</button>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </ModalFooter>
             </Modal>

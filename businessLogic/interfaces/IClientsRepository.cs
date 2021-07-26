@@ -6,5 +6,6 @@ namespace businessLogic.interfaces
     public interface IClientsRepository:IGenericRepository<Clients>
     {
         public IEnumerable<Clients> GetAllClients();
+        public bool AddClient(Clients client);
     }
 }
