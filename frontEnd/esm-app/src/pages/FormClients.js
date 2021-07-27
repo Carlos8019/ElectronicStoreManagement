@@ -3,7 +3,7 @@ import { useContext, useEffect } from 'react';
 import ClientContext from '../contexts/ClientContext';
 
 export default function FormClients() {
-    const{name,address,phone,email,errorEmail,messageForm,handleSubmit,setMessageForm,setEnableButton,handleChange,cleanFields}=useContext(ClientContext);
+    const{nameClient,address,phone,email,errorEmail,messageForm,handleSubmit,setMessageForm,setEnableButton,handleChange,cleanFields}=useContext(ClientContext);
     useEffect(() => {
         setEnableButton(true);
         setMessageForm("");
@@ -14,7 +14,7 @@ export default function FormClients() {
             <div className="create" >
                 <form onSubmit={handleSubmit} >
                             <label>Nombre</label>
-                            <input type="text" required value={name} onChange={(e) => handleChange(e,1)} />
+                            <input type="text" required value={nameClient} onChange={(e) => handleChange(e,1)} />
 
                             <label>Teléfono</label>
                             <input type="text" required value={phone} onChange={(e) => handleChange(e,2)} />

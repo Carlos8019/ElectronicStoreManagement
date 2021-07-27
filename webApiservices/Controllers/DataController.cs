@@ -3,6 +3,7 @@ using businessLogic.interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using businessLogic.DTO;
+using System;
 
 namespace webApiservices.Controllers
 {
@@ -33,7 +34,19 @@ namespace webApiservices.Controllers
         [HttpPost("saveClient")]
         public IActionResult saveClient([FromBody]ClientDTO dto )
         {
-            return Ok(1);
+            try
+            {
+                var result=_unitOfWork.Clients.AddClient(dto);
+                if(result)
+                    return Ok(1);
+                else
+                    return Ok(0);                
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
     }
 }

@@ -10,5 +10,15 @@ namespace dataAccess.Models
         public string phoneClient { get; set; }
         public string addressClient { get; set; }
         public string emailClient { get; set; }
+        public Clients()
+        {
+        }
+        public Clients(dynamic obj)
+        {
+            this.nameClient=obj.nameClient;
+            this.phoneClient=obj.phone;
+            this.addressClient=obj.address;
+            this.emailClient=obj.email;
+        }
     }
 }

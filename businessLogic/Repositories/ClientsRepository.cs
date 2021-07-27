@@ -1,7 +1,9 @@
 using businessLogic.interfaces;
 using dataAccess.Models;
+using System.Linq;
 using dataAccess.Classes;
 using dataAccess;
+using businessLogic.DTO;
 using System.Collections.Generic;
 namespace businessLogic.Repositories
 {
@@ -11,21 +13,21 @@ namespace businessLogic.Repositories
         public ClientsRepository(EsDbContext context):base(context)
         {
         }
-        public bool AddClient(Clients client)
+        public bool AddClient(ClientDTO dtoClient)
         {
             bool result=false;
-            /*
-            _context.Add(client);
-            var validation=_context.save().result;
+            Clients objClient= new Clients(dtoClient);
+            _context.Clients.Add(objClient);
+            var validation=_context.SaveChanges();
             if(validation==1)
                 result=true;
-                */
             return result;
         }
 
         public IEnumerable<Clients> GetAllClients()
         {
-            List<Clients> result=new List<Clients>();
+            var result=_context.Clients.ToList();
+            /*List<Clients> result=new List<Clients>();
             Clients objClient=new Clients();
             Clients objClient1=new Clients();
             objClient.idClient=1;
@@ -40,7 +42,9 @@ namespace businessLogic.Repositories
             objClient1.addressClient="Solanda";
             objClient1.emailClient="tatianaisabel@gmail.com";
             result.Add(objClient1);
+            */
             return result;
+            
         }
     }
 }

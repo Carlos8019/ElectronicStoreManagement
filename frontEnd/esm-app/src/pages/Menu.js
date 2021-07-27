@@ -29,6 +29,7 @@ export default function Menu() {
       <Paper className={classes.paper}>
         <MenuList>
           <MenuItem><NavLink to="/menu/addclient">Registro de Clientes</NavLink></MenuItem>
+          <MenuItem>Registro de Servicios</MenuItem>
           <MenuItem>Registro de Productos</MenuItem>
           <MenuItem>Registro de Ventas</MenuItem>
           <MenuItem>Registro de Usuarios</MenuItem>
