@@ -22,6 +22,11 @@ namespace webApiservices.Controllers
             var result=_unitOfWork.Clients.GetAllClients();
             return Ok(result);            
         }
+        [HttpGet("getAllServices")]
+        public IActionResult getAllServices(){
+            var result=_unitOfWork.Services.GetAllServices();
+            return Ok(result);
+        }
         [HttpGet("validateLogin/{userName}/{password}")]
         public IActionResult validateLogin(string userName,string password)
         {

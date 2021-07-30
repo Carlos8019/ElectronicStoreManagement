@@ -1,42 +1,29 @@
-import { createContext, useState } from "react";
+import { createContext, useState,useContext } from "react";
 import ClientDTO from '../DTO/ClientDTO';
 import validator from 'validator';
 import postData from '../utilities/ApiServicePost';
 import GetData from '../utilities/ApiServiceGet';
+import { NotificationManager } from "react-notifications";
+import MethodsContext from "./MethodsContext";
 
 const ClientContext = createContext();
 const ClientProvider = ({ children }) => {
-    const [enableButton, setEnableButton] = useState(true);
+
     const [nameClient, setname] = useState('');
     const [phone, setphone] = useState('');
     const [address, setaddress] = useState('');
     const [email, setemail] = useState('');
     const [errorEmail, setErrorEmail] = useState('');
-    const [messageForm, setMessageForm] = useState("");
-    const [modal, setModal] = useState(false);
+
     const [clientes, setClientes] = useState([]);
     const [tablaClientes, setTablaClientes] = useState([]);
-    const [busqueda, setBusqueda] = useState("");
 
-    const handleChangeFilter = e => {
-        setBusqueda(e.target.value);
-        filter(e.target.value);
-    }
-    const filter = (searchItem) => {
-        //console.info(tablaClientes);
-        var result = tablaClientes.filter((element) => {
-            if(element.nameClient!=null)
-            {
-                if (element.nameClient.toString().toLowerCase().includes(searchItem.toLowerCase()))
-                    return element;
-            }
-        });
+    const { modal,setBusqueda,setModal,enableButton,messageForm, setMessageForm,setEnableButton,handleAdd,handleChangeFilter } = useContext(MethodsContext);
 
-        setClientes(result);
+    const handleChangeClients=(e)=>{
+        setClientes(handleChangeFilter(e,tablaClientes,'nameClient'));
     }
-    const handleAdd = () => {
-        setModal(!modal);
-    }   
+
     const getDataClientes = () => {
         GetData("getAllClients")
             .then(resp => {
@@ -48,7 +35,7 @@ const ClientProvider = ({ children }) => {
             });
     }
  
-    const handleSubmit = (e) => {
+    const handleSubmitClient = (e) => {
         e.preventDefault();
         console.log(nameClient, " ", phone, " ", email, " ", address);
         if (!nameClient || !phone || !email || !address) {
@@ -63,21 +50,21 @@ const ClientProvider = ({ children }) => {
                     if (response.data) {
                         if (response.data === 1)
                         {
-                            setMessageForm("Cliente Agregado");
+                            NotificationManager.info("Cliente Agregado");
                             handleAdd();
                             getDataClientes();
                         }
                         else
                         {
-                            setMessageForm("Error al crear el cliente");
+                            NotificationManager.error("Error al crear el cliente");
                         }
                     }
                     else
-                        setMessageForm("Error al crear el cliente");
+                        NotificationManager.error("Error al crear el cliente");
 
                 })
                 .catch((error) => {
-                    setMessageForm("Error de comunicacion");
+                    NotificationManager.warning("Error de comunicacion");
                 });
         }
     }
@@ -114,7 +101,9 @@ const ClientProvider = ({ children }) => {
         setemail("");
     }
 
-    const data={nameClient,address,phone,email,enableButton,errorEmail,messageForm,modal,clientes,tablaClientes,busqueda, setBusqueda,handleSubmit,handleChange,setErrorEmail,setMessageForm,setEnableButton,handleAdd,cleanFields,getDataClientes,setTablaClientes,setClientes,handleChangeFilter}
+    const data={nameClient,address,phone,email,errorEmail,clientes,tablaClientes
+        ,handleSubmitClient,handleChangeClients,setErrorEmail,cleanFields,getDataClientes
+        ,setTablaClientes,setClientes,handleChange}
     return (
         <ClientContext.Provider value={data}>
             {children}

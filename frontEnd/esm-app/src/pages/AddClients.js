@@ -4,8 +4,10 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import GridClients from './GridClients';
 import FormClients from './FormClients';
 import ClientContext, { ClientProvider } from '../contexts/ClientContext';
+import MethodsContext from '../contexts/MethodsContext';
 function AddClients() {
-    const { enableButton, handleSubmit, handleAdd, modal } = useContext(ClientContext);
+    const { handleSubmitClient } = useContext(ClientContext);
+    const{enableButton,modal,handleAdd}=useContext(MethodsContext);
     return (
         <>
             <div className="create">
@@ -24,7 +26,7 @@ function AddClients() {
                                     <button onClick={() => handleAdd()}>Cancelar</button>
                                 </td>
                                 <td>
-                                    <button disabled={enableButton} onClick={(e) => handleSubmit(e)}>Agregar Cliente</button>
+                                    <button disabled={enableButton} onClick={(e) => handleSubmitClient(e)}>Agregar Cliente</button>
                                 </td>
                             </tr>
                         </table>

@@ -4,7 +4,8 @@ namespace businessLogic.interfaces
 {
     public interface IUnitOfWork:IDisposable
     {
-        IClientsRepository Clients{get;}
-        IUsersRepository Users{get;}
+        public IClientsRepository Clients{get;}
+        public IUsersRepository Users{get;}
+        public IServicesRepository Services{get;}
     }
 }

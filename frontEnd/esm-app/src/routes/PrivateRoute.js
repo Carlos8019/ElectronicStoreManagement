@@ -4,6 +4,6 @@ import { Redirect, Route } from 'react-router-dom';
 const user = {id:1,user:'hola'};
 export default function PrivateRoute({ component: Component, rest }) {
     return (
-        <Route {...rest}>{user ? <Component />: <Redirect to="/" />}</Route>
+        <Route exact {...rest}>{user ? <Component />: <Redirect to="/" />}</Route>
     )
 }

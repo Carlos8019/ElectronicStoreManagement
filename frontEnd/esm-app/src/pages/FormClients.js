@@ -1,9 +1,11 @@
 import '../styles/forms.css';
 import { useContext, useEffect } from 'react';
 import ClientContext from '../contexts/ClientContext';
+import MethodsContext from '../contexts/MethodsContext';
 
 export default function FormClients() {
-    const{nameClient,address,phone,email,errorEmail,messageForm,handleSubmit,setMessageForm,setEnableButton,handleChange,cleanFields}=useContext(ClientContext);
+    const{nameClient,address,phone,email,errorEmail,handleSubmit,handleChange,cleanFields}=useContext(ClientContext);
+    const{messageForm,setMessageForm,setEnableButton}=useContext(MethodsContext);
     useEffect(() => {
         setEnableButton(true);
         setMessageForm("");

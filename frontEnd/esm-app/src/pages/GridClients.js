@@ -6,7 +6,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import ClientContext from '../contexts/ClientContext';
 
 function GridClients() {
-    const {getDataClientes,clientes,busqueda, handleChangeFilter}=useContext(ClientContext);
+    const { getDataClientes, clientes, busqueda, handleChangeClients } = useContext(ClientContext);
     useEffect(() => {
         getDataClientes();
     }, []);
@@ -15,8 +15,8 @@ function GridClients() {
             <div className="containerInput" >
                 <input className="form-control inputBuscar"
                     value={busqueda}
-                    placeholder="Busqueda por nombre ó email"
-                    onChange={handleChangeFilter}
+                    placeholder="Busqueda por nombre"
+                    onChange={(e)=>handleChangeClients(e)}
                 />
                 <button className="btn btn-success" >
                     <FontAwesomeIcon icon={faSearch} />
@@ -26,14 +26,27 @@ function GridClients() {
                 <table className="table table-sm table-bordered" >
                     <thead>
                         <tr>
-                            <th>ID</th> <th>Nombre</th> <th>Telefono</th>
-                            <th>Direccion</th> <th> Correo </th> </tr></thead>
-                    <tbody > {clientes && clientes.map((valor) => (<tr key={valor.idClient}>
-                        <td > {valor.idClient} </td> <td > {valor.nameClient} </td> <td > {valor.phoneClient} </td> <td > {valor.addressClient} </td> <td > {valor.emailClient} </td> </tr >
+                            <th>ID</th> 
+                            <th>Nombre</th> 
+                            <th>Telefono</th>
+                            <th>Direccion</th> 
+                            <th> Correo </th> 
+                        </tr>
+                    </thead>
+                    <tbody> {clientes && clientes.map((valor) => 
+                    (
+                    <tr key={valor.idClient}>
+                        <td>{valor.idClient}</td> 
+                        <td>{valor.nameClient}</td> 
+                        <td>{valor.phoneClient}</td> 
+                        <td>{valor.addressClient}</td> 
+                        <td>{valor.emailClient}</td> 
+                    </tr >
                     ))
-                    } </tbody> 
-                </table> 
-            </div> 
+                          } 
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 }
