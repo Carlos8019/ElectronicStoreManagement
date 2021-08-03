@@ -7,5 +7,6 @@ namespace businessLogic.interfaces
         public IClientsRepository Clients{get;}
         public IUsersRepository Users{get;}
         public IServicesRepository Services{get;}
+        public IProductsRepository Products { get; set; }
     }
 }

@@ -30,7 +30,7 @@ export default function Menu() {
         <MenuList>
           <MenuItem><NavLink exact to="/addclient">Registro de Clientes</NavLink></MenuItem>
           <MenuItem><NavLink exact to="/addservice">Registro de Servicios</NavLink></MenuItem>
-          <MenuItem>Registro de Productos</MenuItem>
+          <MenuItem><NavLink exact to="/addproduct">Registro de Productos</NavLink></MenuItem>
           <MenuItem>Registro de Ventas</MenuItem>
           <MenuItem>Registro de Usuarios</MenuItem>
           <MenuItem>Registro de Asignaciones</MenuItem>

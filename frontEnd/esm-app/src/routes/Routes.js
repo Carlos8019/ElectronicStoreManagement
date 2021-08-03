@@ -10,6 +10,8 @@ import AddServices from '../pages/AddServices';
 import { ServiceProvider } from '../contexts/ServicesContext';
 import { NotificationContainer } from 'react-notifications';
 import { MethodsProvider } from '../contexts/MethodsContext';
+import { ProductsProvider } from '../contexts/ProductsContext';
+import AddProduct from '../pages/AddProduct';
 function Routes() {
     const { user } = useContext(UserContext);
     console.log("router", user);
@@ -32,7 +34,11 @@ function Routes() {
                                 <AddServices />
                             </ServiceProvider>
                         </Route>
-
+                        <Route exact path="/addproduct">
+                            <ProductsProvider>
+                                <AddProduct />
+                            </ProductsProvider>
+                        </Route>
                         <Route path="*">
                             <h3>Pagina no encontrada</h3>
                         </Route>

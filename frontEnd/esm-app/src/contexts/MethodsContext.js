@@ -6,7 +6,7 @@ const MethodsProvider=({children})=>{
     const [modal, setModal] = useState(false);
     const [busqueda, setBusqueda] = useState("");
     const [messageForm, setMessageForm] = useState("");
-    
+    const [messageResult,setMessageResult]=useState("");
     const handleChangeFilter = (e,table,nameField) => {
         setBusqueda(e.target.value);
         var searchItem=e.target.value;
@@ -30,9 +30,10 @@ const MethodsProvider=({children})=>{
 
     const handleAdd = () => {
         setModal(!modal);
+        setMessageForm("");
     }   
 
-    const data={modal,busqueda,enableButton,messageForm
+    const data={modal,busqueda,enableButton,messageForm,messageResult,setMessageResult
                ,setMessageForm,setEnableButton,setModal,setBusqueda,handleAdd,handleChangeFilter}
     return (
         <MethodsContext.Provider value={data}>

@@ -15,5 +15,6 @@ using System;
     }
             public DbSet<Clients> Clients { get; set; }
             public DbSet<Services> Services { get; set; }
+            public DbSet<Products> Products { get; set; }
         }
     }

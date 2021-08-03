@@ -8,5 +8,13 @@ namespace dataAccess.Models
         public int idService { get; set; }
         public string nameService { get; set; }
         public string descriptionService { get; set; }
+        public Services()
+        {
+        }
+        public Services(dynamic obj)
+        {
+            this.nameService=obj.nameService;
+            this.descriptionService=obj.descriptionService;
+        }        
     }
 }

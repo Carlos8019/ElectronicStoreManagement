@@ -1,32 +1,35 @@
+import React from 'react'
 import { useContext, useEffect } from "react";
-import ServicesContext from "../contexts/ServicesContext";
 import 'react-notifications/lib/notifications.css';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MethodsContext from "../contexts/MethodsContext";
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
-export default function AddServices() {
-    const { nameService, messageResult, tableServices, descriptionService
-        , setMessageResult, handleSubmitServices, handleServiceChange
-        , handleChangeFilterServices,messageForm,getDataServices } = useContext(ServicesContext);
-    const { enableButton, modal, busqueda, handleChangeFilter, handleAdd,setEnableButton } = useContext(MethodsContext);
+import ProductsContex from '../contexts/ProductsContext';
+
+export default function AddProduct() {
+    const {handleChangeFilterProducts,tableProducts,nameProduct,getDataProducts
+        ,handleProductChange,descriptionProduct,handleSubmitProduct,cleanFieldsProduct,handleAddProduct}=useContext(ProductsContex);
+    const { enableButton, modal, busqueda
+          ,setEnableButton,messageResult,setMessageResult,setMessageForm,messageForm } = useContext(MethodsContext);
     useEffect(() => {
         setMessageResult("");
+        cleanFieldsProduct();
+        setMessageForm("");
         setEnableButton(true);
-        getDataServices();
-        console.log("AddServices");
-    }, []);
+        getDataProducts();
+    }, []);    
     return (
         <>
             <div className="create">
-                <button onClick={() => handleAdd()} >Agregar Servicio</button>
+                <button onClick={() => handleAddProduct()}>Agregar Producto</button>
             </div>
             <div className="App" >
                 <div className="containerInput" >
                     <input className="form-control inputBuscar"
                         value={busqueda}
                         placeholder="Busqueda por servicio"
-                        onChange={handleChangeFilterServices}
+                        onChange={handleChangeFilterProducts}
                     />
                     <button className="btn btn-success" >
                         <FontAwesomeIcon icon={faSearch} />
@@ -37,41 +40,41 @@ export default function AddServices() {
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Servicio</th>
+                                <th>Producto</th>
                                 <th>Descripcion</th>
                             </tr>
                         </thead>
-                        <tbody> {tableServices && tableServices.map((valor) =>
+                        <tbody> {tableProducts && tableProducts.map((valor) =>
                         (
-                            <tr key={valor.idService}>
-                                <td>{valor.idService}</td>
-                                <td>{valor.nameService}</td>
-                                <td>{valor.descriptionService}</td>
+                            <tr key={valor.idProduct}>
+                                <td>{valor.idProduct}</td>
+                                <td>{valor.nameProduct}</td>
+                                <td>{valor.descriptionProduct}</td>
                             </tr >
                         ))
                         }
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </div> 
             <Modal isOpen={modal}>
                 <ModalHeader>
                 </ModalHeader>
                 <ModalBody>
                     <form>
-                        <label>Nombre Servicio</label>
+                        <label>Nombre Producto</label>
                         <input
                             type="text"
                             required
-                            value={nameService}
-                            onChange={(e) => handleServiceChange(e, 1)}
+                            value={nameProduct}
+                            onChange={(e) => handleProductChange(e, 1)}
                         />
-                        <label>Descripcion Servicio</label>
+                        <label>Descripcion Producto</label>
                         <input
                             type="text"
                             required
-                            value={descriptionService}
-                            onChange={(e) => handleServiceChange(e, 2)}
+                            value={descriptionProduct}
+                            onChange={(e) => handleProductChange(e, 2)}
                         />
                         <p>{messageForm}</p>
                     </form>
@@ -81,16 +84,18 @@ export default function AddServices() {
                         <table>
                             <tr>
                                 <td>
-                                    <button onClick={() => handleAdd()}>Cancelar</button>
+                                    <button onClick={() => handleAddProduct()}>Cancelar</button>
                                 </td>
                                 <td>
-                                    <button disabled={enableButton} onClick={(e) => handleSubmitServices(e)}>Agregar Servicio</button>
+                                    <button disabled={enableButton} onClick={(e) => handleSubmitProduct(e)}>Agregar Producto</button>
                                 </td>
                             </tr>
                         </table>
                     </div>
                 </ModalFooter>
             </Modal>
+
         </>
-    );
+    )
 }
+

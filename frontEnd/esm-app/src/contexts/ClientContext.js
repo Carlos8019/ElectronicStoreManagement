@@ -37,7 +37,6 @@ const ClientProvider = ({ children }) => {
  
     const handleSubmitClient = (e) => {
         e.preventDefault();
-        console.log(nameClient, " ", phone, " ", email, " ", address);
         if (!nameClient || !phone || !email || !address) {
             setMessageForm("Ingrese información en todos los campos");
         }
@@ -45,7 +44,7 @@ const ClientProvider = ({ children }) => {
             setMessageForm("Ejecutando...");
             setEnableButton(false);
             const client = ClientDTO({ nameClient, phone, address, email });
-            postData(client)
+            postData("saveClient",client)
                 .then((response) => {
                     if (response.data) {
                         if (response.data === 1)

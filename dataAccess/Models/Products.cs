@@ -8,9 +8,17 @@ namespace dataAccess.Models
         [Key]
         public int idProduct { get; set; }
         public string  nameProduct { get; set; }
-        public string descripctionProduct { get; set; }
-        public int idService { get; set; }
-        public List<Services> Services { get; set; }
- 
+        public string descriptionProduct { get; set; }
+        //public int idService { get; set; }
+        //public List<Services> Services { get; set; }
+        public Products()
+        {
+            
+        }
+        public Products(dynamic obj)
+        {
+            this.nameProduct=obj.nameProduct;
+            this.descriptionProduct=obj.descriptionProduct;
+        }
     }
 }

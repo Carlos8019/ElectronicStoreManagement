@@ -53,5 +53,44 @@ namespace webApiservices.Controllers
             }
 
         }
+
+        [HttpGet("getAllProducts")]
+        public IActionResult getAllProducts()
+        {
+            var result=_unitOfWork.Products.GetAllProducts();
+            return Ok(result);
+        }
+        [HttpPost("saveProduct")]
+        public IActionResult saveProducts([FromBody] ProductDTO dto)
+        {
+            try
+            {
+                var result=_unitOfWork.Products.AddProduct(dto);
+                if(result)
+                    return Ok(1);
+                else
+                    return Ok(0);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPost("saveService")]
+        public IActionResult saveService([FromBody] ServiceDTO dto)
+        {
+            try
+            {
+                var result=_unitOfWork.Services.AddServices(dto);
+                if(result)
+                    return Ok(1);
+                else
+                    return Ok(0);                   
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
