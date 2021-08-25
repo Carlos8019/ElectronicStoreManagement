@@ -6,6 +6,8 @@ using businessLogic.interfaces;
 using System.Linq;
 using System.Collections.Generic;
 using businessLogic.DTO;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 namespace businessLogic.Repositories
 {
     public class ProductsRepository:GenericRepository<Products>, IProductsRepository
@@ -14,16 +16,16 @@ namespace businessLogic.Repositories
         {
             
         }
-        public IEnumerable<Products> GetAllProducts()
+        public async Task<IEnumerable<Products>> GetAllProducts()
         {
-            return _context.Products.ToList();
+            return await _context.Products.ToListAsync();
         }
-        public bool AddProduct(ProductDTO dto)
+        public async Task<bool> AddProduct(ProductDTO dto)
         {
             bool result=false;
             Products tmp=new Products(dto);
-            _context.Add(tmp);
-            var validation=_context.SaveChanges();
+            await _context.AddAsync(tmp);
+            var validation=await _context.SaveChangesAsync();
             if(validation==1)
                 result=true;
             return result;

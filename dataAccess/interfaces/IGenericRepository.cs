@@ -12,6 +12,6 @@ namespace dataAccess.interfaces
         public void Delete(T entity);
 
         public void Update(T entity);
-        public Task<int> save();
+        public Task<int> Save();
     }
 }

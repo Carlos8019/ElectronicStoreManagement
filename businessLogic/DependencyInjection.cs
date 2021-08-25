@@ -14,6 +14,7 @@ namespace businessLogic
             services.AddTransient<IUsersRepository,UsersRespository>();
             services.AddTransient<IServicesRepository,ServicesRepository>();
             services.AddTransient<IProductsRepository,ProductsRepository>();
+            services.AddTransient<IUserProfileRespository,UserProfileRepository>();
             services.AddTransient<IUnitOfWork,UnitOfWork>();
             return services;
         }

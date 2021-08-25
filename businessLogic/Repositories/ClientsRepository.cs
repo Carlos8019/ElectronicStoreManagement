@@ -3,8 +3,10 @@ using dataAccess.Models;
 using System.Linq;
 using dataAccess.Classes;
 using dataAccess;
+using System.Threading.Tasks;
 using businessLogic.DTO;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 namespace businessLogic.Repositories
 {
     public class ClientsRepository:GenericRepository<Clients> ,IClientsRepository 
@@ -13,20 +15,20 @@ namespace businessLogic.Repositories
         public ClientsRepository(EsDbContext context):base(context)
         {
         }
-        public bool AddClient(ClientDTO dtoClient)
+        public async Task<bool> AddClient(ClientDTO dtoClient)
         {
             bool result=false;
             Clients objClient= new Clients(dtoClient);
-            _context.Clients.Add(objClient);
-            var validation=_context.SaveChanges();
+            await _context.Clients.AddAsync(objClient);
+            var validation=await _context.SaveChangesAsync();
             if(validation==1)
                 result=true;
             return result;
         }
 
-        public IEnumerable<Clients> GetAllClients()
+        public async Task<IEnumerable<Clients>> GetAllClients()
         {
-            var result=_context.Clients.ToList();
+            var result=await _context.Clients.ToListAsync();
             /*List<Clients> result=new List<Clients>();
             Clients objClient=new Clients();
             Clients objClient1=new Clients();

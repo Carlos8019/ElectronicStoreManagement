@@ -24,7 +24,7 @@ namespace dataAccess.Classes
             return await _context.Set<T>().ToListAsync();
         }
 
-        public async Task Add(T entity)
+        public virtual async Task Add(T entity)
         {
             await _context.Set<T>().AddAsync(entity);
         }
@@ -38,7 +38,7 @@ namespace dataAccess.Classes
         {
             _context.Set<T>().Update(entity);
         }
-        public async Task<int> save()
+        public virtual async Task<int> Save()
         {
             return await _context.SaveChangesAsync();
         }

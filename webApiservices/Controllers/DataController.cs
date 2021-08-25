@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using businessLogic.DTO;
 using System;
-
+using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 namespace webApiservices.Controllers
 {
     [ApiController]
@@ -12,36 +13,42 @@ namespace webApiservices.Controllers
     public class DataController:ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
-        public DataController(IUnitOfWork unitOfWork)
+        private readonly ILogger _logger;
+        public DataController(IUnitOfWork unitOfWork,ILogger<DataController> logger)
         {
+            _logger=logger;
             this._unitOfWork=unitOfWork;
         }
         [HttpGet("getAllClients")]
-        public IActionResult getAllClients()
+        public async Task<IActionResult> getAllClients()
         {
-            var result=_unitOfWork.Clients.GetAllClients();
+            var result=await _unitOfWork.Clients.GetAllClients();
             return Ok(result);            
         }
         [HttpGet("getAllServices")]
-        public IActionResult getAllServices(){
-            var result=_unitOfWork.Services.GetAllServices();
+        public async Task<IActionResult> getAllServices(){
+            var result=await _unitOfWork.Services.GetAllServices();
             return Ok(result);
         }
         [HttpGet("validateLogin/{userName}/{password}")]
-        public IActionResult validateLogin(string userName,string password)
+        public async Task<IActionResult> validateLogin(string userName,string password)
         {
-            var result=_unitOfWork.Users.ValidateClient(userName,password).ToList();
+            var result=await _unitOfWork.Users.ValidateClient(userName,password);
             if(result.Any())
+            {
+                _logger.LogInformation("Validation login success");
                 return Ok(1);
+            }
+                
             else 
                 return Ok(0);
         }
         [HttpPost("saveClient")]
-        public IActionResult saveClient([FromBody]ClientDTO dto )
+        public async Task<IActionResult> saveClient([FromBody]ClientDTO dto )
         {
             try
             {
-                var result=_unitOfWork.Clients.AddClient(dto);
+                var result=await _unitOfWork.Clients.AddClient(dto);
                 if(result)
                     return Ok(1);
                 else
@@ -55,17 +62,17 @@ namespace webApiservices.Controllers
         }
 
         [HttpGet("getAllProducts")]
-        public IActionResult getAllProducts()
+        public async Task<IActionResult> getAllProducts()
         {
-            var result=_unitOfWork.Products.GetAllProducts();
+            var result=await _unitOfWork.Products.GetAllProducts();
             return Ok(result);
         }
         [HttpPost("saveProduct")]
-        public IActionResult saveProducts([FromBody] ProductDTO dto)
+        public async Task<IActionResult> saveProducts([FromBody] ProductDTO dto)
         {
             try
             {
-                var result=_unitOfWork.Products.AddProduct(dto);
+                var result=await _unitOfWork.Products.AddProduct(dto);
                 if(result)
                     return Ok(1);
                 else
@@ -77,11 +84,11 @@ namespace webApiservices.Controllers
             }
         }
         [HttpPost("saveService")]
-        public IActionResult saveService([FromBody] ServiceDTO dto)
+        public async Task<IActionResult> saveService([FromBody] ServiceDTO dto)
         {
             try
             {
-                var result=_unitOfWork.Services.AddServices(dto);
+                var result=await _unitOfWork.Services.AddServices(dto);
                 if(result)
                     return Ok(1);
                 else

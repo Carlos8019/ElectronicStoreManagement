@@ -10,12 +10,13 @@ namespace businessLogic
         public IUsersRepository Users{get;}
         public IServicesRepository Services{get;}
         public IProductsRepository Products { get; set; }
-
+        public IUserProfileRespository Profiles{get;}
         public UnitOfWork(EsDbContext context
         ,IClientsRepository clients
         ,IUsersRepository users
         ,IServicesRepository services
-        ,IProductsRepository products        
+        ,IProductsRepository products
+        ,IUserProfileRespository profile
         )
         {
             this.Clients=clients;
@@ -23,6 +24,7 @@ namespace businessLogic
             this.Users=users;
             this.Services=services;
             this.Products=products;
+            this.Profiles=profile;
         }
 
         public void Dispose()
