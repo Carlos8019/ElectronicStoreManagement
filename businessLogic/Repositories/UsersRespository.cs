@@ -23,7 +23,7 @@ namespace businessLogic.Repositories
         {
             //find iser profile   
             _logger.LogInformation("Create User",dto);
-            int.TryParse(dto.idProfile,out int idProfile);
+            int.TryParse(dto.UserProfileidProfile,out int idProfile);
             var objUserProfile=await _userProfile.GetProfileById(idProfile);
             //create entity
             Users entity=new Users(dto);
@@ -41,7 +41,7 @@ namespace businessLogic.Repositories
         {
             List<Users> result= new List<Users>();
             Users objUser= new Users();
-            objUser.idProfile=1;
+            objUser.UserProfileidProfile=1;
             objUser.nameUser="binyanea";
             objUser.passwordUser="7b85175b455060e3237e925f023053ca9515e8682a83c8b09911c724a1f8b75f";
             if(userName==objUser.nameUser && password== objUser.passwordUser)

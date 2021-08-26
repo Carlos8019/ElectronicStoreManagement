@@ -1,14 +1,19 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.Generic;
 namespace dataAccess.Models
 {
     public class Users
     {
         [Key]
+        [Column("idUser")]
         public int idUser { get; set; }
+        [Column("nameUser")]
         public string nameUser { get; set; }
+        [Column("passwordUser")]
         public string passwordUser { get; set; }
-        public int idProfile { get; set; }
+        [Column("idProfile")]
+        public int UserProfileidProfile { get; set; }
         public List<UserProfile> UserProfiles { get; set; }
         public Users()
         {
@@ -18,8 +23,8 @@ namespace dataAccess.Models
         {
             this.nameUser = obj.nameUser;
             this.passwordUser = obj.passwordUser;
-            int.TryParse(obj.idProfile, out int tmpidProfile);
-            this.idProfile = tmpidProfile;
+            int.TryParse(obj.UserProfileidProfile, out int tmpidProfile);
+            this.UserProfileidProfile = tmpidProfile;
         }
     }
 }
