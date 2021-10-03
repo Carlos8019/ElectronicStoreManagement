@@ -27,7 +27,7 @@ namespace businessLogic.Repositories
             var objUserProfile=await _userProfile.GetProfileById(idProfile);
             //create entity
             Users entity=new Users(dto);
-            entity.UserProfiles=objUserProfile.ToList();
+            entity.UserProfiles=objUserProfile.First();
             _logger.LogInformation("Create Entity");
             var result=await _context.Users.AddAsync(entity);
             var insert=await _context.SaveChangesAsync();
@@ -40,13 +40,12 @@ namespace businessLogic.Repositories
         public async Task<IEnumerable<Users>> ValidateClient(string userName, string password)
         {
             List<Users> result= new List<Users>();
-            Users objUser= new Users();
-            objUser.UserProfileidProfile=1;
-            objUser.nameUser="binyanea";
-            objUser.passwordUser="7b85175b455060e3237e925f023053ca9515e8682a83c8b09911c724a1f8b75f";
-            if(userName==objUser.nameUser && password== objUser.passwordUser)
+            var validation=await _context.Users
+                       .Where(u=>u.nameUser==userName && u.passwordUser==password).ToListAsync();
+
+            if(validation.Any())
             {
-                result.Add(objUser);    
+                result.Add(validation.First());    
             }
             return result;
 

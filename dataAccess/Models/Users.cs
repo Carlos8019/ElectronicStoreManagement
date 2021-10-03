@@ -14,7 +14,7 @@ namespace dataAccess.Models
         public string passwordUser { get; set; }
         [Column("idProfile")]
         public int UserProfileidProfile { get; set; }
-        public List<UserProfile> UserProfiles { get; set; }
+        public UserProfile UserProfiles { get; set; }
         public Users()
         {
 

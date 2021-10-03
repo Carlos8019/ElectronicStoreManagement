@@ -12,17 +12,24 @@ import { NotificationContainer } from 'react-notifications';
 import { MethodsProvider } from '../contexts/MethodsContext';
 import { ProductsProvider } from '../contexts/ProductsContext';
 import AddProduct from '../pages/AddProduct';
+import {Provider} from 'react-redux';
+import generateStore from '../Redux/store.js';
+import PreSale from '../pages/PreSale';
 function Routes() {
     const { user } = useContext(UserContext);
     console.log("router", user);
+    const store=generateStore();
     return (
+        <Provider store={store}>
         <MethodsProvider>
             <BrowserRouter>
                 <NotificationContainer />
                 {user ? <Menu /> : <h1></h1>}
                 {user ?
                     <Switch>
+                       
                         <Route exact path="/" component={Login} />
+                        <Route exact path="/presale" component={PreSale} />
                         <Route exact path="/blank" component={BlankPage} />
                         <Route exact path="/addclient">
                             <ClientProvider>
@@ -53,6 +60,7 @@ function Routes() {
                 }
             </BrowserRouter>
         </MethodsProvider>
+        </Provider>
     );
 }
 export default Routes;
