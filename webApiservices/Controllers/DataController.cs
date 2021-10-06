@@ -67,6 +67,21 @@ namespace webApiservices.Controllers
             var result=await _unitOfWork.Products.GetAllProducts();
             return Ok(result);
         }
+        [HttpGet("getAllPaymentMode")]
+        public async Task<IActionResult> getAllPaymentMode()
+        {
+            var result=await _unitOfWork.PaymentModes.GetAllPaymentsMode();
+            return Ok(result);
+        }
+
+        [HttpGet("getAllDeliveryTimes")]
+        public async Task<IActionResult> getAllDeliveryTimes()
+        {
+            var result=await _unitOfWork.DeliveryTimes.GetAllDeliveryTimes();
+            return Ok(result);
+        }
+        
+
         [HttpPost("saveProduct")]
         public async Task<IActionResult> saveProducts([FromBody] ProductDTO dto)
         {

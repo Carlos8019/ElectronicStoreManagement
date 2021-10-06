@@ -1,12 +1,11 @@
 import GetData from '../utilities/ApiServiceGet';
-import { GET_ALL_CLIENTS } from '../utilities/Constants';
+import { GET_ALL_CLIENTS,GET_CLIENTS_SUCCESS } from '../utilities/Constants';
 //constants
 const clientsData={
     array:[]
 }
 
 //reducer
-const GET_CLIENTS_SUCCESS='GET_CLIENTS_SUCCESS';
 export default function clientReducer(state=clientsData,action){
     switch(action.type)
     {
@@ -23,7 +22,6 @@ export const getClientsAction=()=>async(dispatch,getState)=>{
         dispatch({
             type:GET_CLIENTS_SUCCESS,
             payload:resp.data
-
     })}
     ).catch(error=>{console.log(error)});
 }

@@ -9,5 +9,7 @@ namespace businessLogic.interfaces
         public IServicesRepository Services{get;}
         public IProductsRepository Products { get; set; }
         public IUserProfileRespository Profiles{get;}
+        public IPaymentModeRepository PaymentModes {get;}
+        public IDeliveryTimeRepository DeliveryTimes {get;}
     }
 }

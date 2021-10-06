@@ -36,5 +36,7 @@ namespace dataAccess
         public DbSet<Products> Products { get; set; }
         public DbSet<Users> Users { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<PaymentMode> PaymentModes{ get; set; }
+        public DbSet<DeliveryTime> DeliveryTimes { get; set; }
     }
 }
