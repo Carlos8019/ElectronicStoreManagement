@@ -3,6 +3,7 @@ export const baseURL="https://localhost:5001/Data/";
 export const GET_ALL_CLIENTS="getAllClients";
 export const GET_ALL_PAYMENT_MODE="getAllPaymentMode";
 export const GET_ALL_DELIVERY_TIMES="getAllDeliveryTimes";
+export const GET_VALIDITY_BY_ID_DELIVERY_TIME="getValidityById";
 //types
 export const GET_PAYMENT_MODE_SUCCESS="GET_PAYMENT_MODE_SUCCESS";
 export const GET_CLIENTS_SUCCESS='GET_CLIENTS_SUCCESS';

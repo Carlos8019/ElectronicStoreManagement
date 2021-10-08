@@ -20,6 +20,7 @@ namespace businessLogic
         ,IProductsRepository products
         ,IUserProfileRespository profile
         ,IPaymentModeRepository paymentMode
+        ,IDeliveryTimeRepository deliveryTime
         )
         {
             this.Clients=clients;
@@ -29,6 +30,7 @@ namespace businessLogic
             this.Products=products;
             this.Profiles=profile;
             this.PaymentModes=paymentMode;
+            this.DeliveryTimes=deliveryTime;
         }
 
         public void Dispose()

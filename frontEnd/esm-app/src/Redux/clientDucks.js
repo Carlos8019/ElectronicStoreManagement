@@ -10,7 +10,7 @@ export default function clientReducer(state=clientsData,action){
     switch(action.type)
     {
         case GET_CLIENTS_SUCCESS:
-            console.info(action.payload);
+            //console.info(action.payload);
             return {...state,array: action.payload}
         default: return state;
     }
