@@ -5,7 +5,7 @@ import { getClientsAction } from '../Redux/clientDucks.js'
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { getPaymentModeAction } from '../Redux/PaymentModeDuck.js';
-import { getDeliveryTimeAction } from '../Redux/DeliveryTimeDuck.js';
+import { getDeliveryTimeAction, getValidityById } from '../Redux/DeliveryTimeDuck.js';
 
 import { styled } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -77,7 +77,10 @@ export default function PreSale() {
 
     const handleChangeV = (event) => {
         setValidity(event.target.value);
-        console.log(event.target.value);
+        //console.log(event.target.value);
+        
+        let validityResult=dispatch(getValidityById(event.target.value));
+        console.log(validityResult);
     };
     const handleChangeClient = (event) => {
         console.log(event.target.id);
@@ -92,6 +95,7 @@ export default function PreSale() {
     const clients = useSelector(store => store.clients.array);
     const paymentMode = useSelector(store => store.paymentMode.array);
     const deliveryTime = useSelector(store => store.deliveryTime.array);
+    //let validityResult=useSelector(store=>store.deliveryTime.id);
 
     const classes = useStyles();
 
