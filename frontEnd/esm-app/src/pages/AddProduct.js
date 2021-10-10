@@ -9,7 +9,7 @@ import ProductsContex from '../contexts/ProductsContext';
 
 export default function AddProduct() {
     const {handleChangeFilterProducts,tableProducts,nameProduct,getDataProducts
-        ,handleProductChange,descriptionProduct,handleSubmitProduct,cleanFieldsProduct,handleAddProduct}=useContext(ProductsContex);
+        ,handleProductChange,descriptionProduct,handleSubmitProduct,cleanFieldsProduct,handleAddProduct,priceProduct}=useContext(ProductsContex);
     const { enableButton, modal, busqueda
           ,setEnableButton,messageResult,setMessageResult,setMessageForm,messageForm } = useContext(MethodsContext);
     useEffect(() => {
@@ -41,6 +41,7 @@ export default function AddProduct() {
                             <tr>
                                 <th>ID</th>
                                 <th>Producto</th>
+                                <th>Precio</th>
                                 <th>Descripcion</th>
                             </tr>
                         </thead>
@@ -49,6 +50,7 @@ export default function AddProduct() {
                             <tr key={valor.idProduct}>
                                 <td>{valor.idProduct}</td>
                                 <td>{valor.nameProduct}</td>
+                                <td>{valor.priceProduct}</td>
                                 <td>{valor.descriptionProduct}</td>
                             </tr >
                         ))
@@ -68,6 +70,13 @@ export default function AddProduct() {
                             required
                             value={nameProduct}
                             onChange={(e) => handleProductChange(e, 1)}
+                        />
+                        <label>Precio</label>
+                        <input
+                            type="number"
+                            required
+                            value={priceProduct}
+                            onChange={(e) => handleProductChange(e, 3)}
                         />
                         <label>Descripcion Producto</label>
                         <input

@@ -4,8 +4,10 @@ export const GET_ALL_CLIENTS="getAllClients";
 export const GET_ALL_PAYMENT_MODE="getAllPaymentMode";
 export const GET_ALL_DELIVERY_TIMES="getAllDeliveryTimes";
 export const GET_VALIDITY_BY_ID_DELIVERY_TIME="getValidityById";
+export const GET_ALL_PRODUCTS="getAllProducts";
 //types
 export const GET_PAYMENT_MODE_SUCCESS="GET_PAYMENT_MODE_SUCCESS";
 export const GET_CLIENTS_SUCCESS='GET_CLIENTS_SUCCESS';
 export const GET_DELIVERY_TIMES_SUCCESS='GET_DELIVERY_TIMES_SUCCESS';
 export const GET_VALIDITY_TIME_BY_ID='GET_VALIDITY_TIME_BY_ID';
+export const GET_PRODUCTS="GET_PRODUCTS";

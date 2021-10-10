@@ -20,7 +20,7 @@ export default function DeliveryTimeReducer(state=deliveryTimeData,action)
                 if(value.idDeliveryTime==action.payload)
                     console.log("finded");
               });*/
-            let result=newState.array.find(({idDeliveryTime})=>idDeliveryTime==action.payload);//action.payload);
+            let result=newState.array.find(({idDeliveryTime})=>idDeliveryTime==action.payload);
             console.info(result.validityDays);
             return {...state,id:result}
               

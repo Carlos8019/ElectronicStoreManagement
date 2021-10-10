@@ -12,6 +12,7 @@ const ProductsProvider=({children})=>{
     const[tableProducts,setTableProducts]=useState([]);
     const[nameProduct,setNameproduct]=useState("");
     const[descriptionProduct,setDescriptionProduct]=useState("");
+    const[priceProduct,setPriceProduct]=useState(0.0);
     const getDataProducts=()=>{
         GetData("getAllProducts")
         .then((response)=> {
@@ -29,18 +30,19 @@ const ProductsProvider=({children})=>{
     const cleanFieldsProduct=()=>{
         setNameproduct("");
         setDescriptionProduct("");
+        setPriceProduct(0.0);
     }
 
     const handleSubmitProduct=(e)=>{
         e.preventDefault();
 
-        if (!nameProduct || !descriptionProduct) {
-            setMessageForm("Ingrese información en todos los campos");
+        if (!nameProduct || !descriptionProduct || (priceProduct===0)) {
+            setMessageForm("Ingrese información y precio en todos los campos");
         }
         else {
             setMessageForm("Ejecutando...");
             setEnableButton(false);
-            const product = ProductDTO({nameProduct,descriptionProduct});
+            const product = ProductDTO({nameProduct,descriptionProduct,priceProduct});
             postData("saveProduct",product)
                 .then((response) => {
                     if (response.data) {
@@ -60,6 +62,7 @@ const ProductsProvider=({children})=>{
 
                 })
                 .catch((error) => {
+                    console.info(error);
                     NotificationManager.warning("Error de comunicacion");
                 });
         }
@@ -77,7 +80,12 @@ const ProductsProvider=({children})=>{
         
         if(option===2)
             setDescriptionProduct(e.target.value);
-
+        if(option===3)
+        {
+            //let value=Number.parseFloat(e.target.value);
+            setPriceProduct(e.target.value);
+        }
+            
         if (nameProduct && descriptionProduct) 
             setEnableButton(false);
     }
@@ -85,7 +93,7 @@ const ProductsProvider=({children})=>{
 
     const data={handleChangeFilterProducts,tableProducts,nameProduct,getDataProducts
         ,handleProductChange,descriptionProduct,handleSubmitProduct,messageForm,setMessageResult
-        ,handleAddProduct,setMessageForm,cleanFieldsProduct}
+        ,handleAddProduct,setMessageForm,cleanFieldsProduct,priceProduct,setPriceProduct}
     return (
         <ProductsContex.Provider value={data}>
             {children}

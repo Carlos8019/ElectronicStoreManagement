@@ -3,10 +3,12 @@ import thunk from 'redux-thunk';
 import clientReducer from './clientDucks.js';
 import PaymentModeReducer from './PaymentModeDuck.js';
 import DeliveryTimeReducer from './DeliveryTimeDuck';
+import productReducer from './ProductsDuck.js';
 const rootReducer=combineReducers({
     clients:clientReducer,
     paymentMode:PaymentModeReducer,
-    deliveryTime:DeliveryTimeReducer
+    deliveryTime:DeliveryTimeReducer,
+    products:productReducer
 
 });
 const composeEnhancers=compose;

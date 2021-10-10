@@ -7,6 +7,9 @@ const MethodsProvider=({children})=>{
     const [busqueda, setBusqueda] = useState("");
     const [messageForm, setMessageForm] = useState("");
     const [messageResult,setMessageResult]=useState("");
+    const [totalUsd, setTotalUsd] = useState(0.0);
+    const [unitValue, setunitValue] = useState(2.51);
+    const [amount, setAmount] = useState(0);    
     const handleChangeFilter = (e,table,nameField) => {
         setBusqueda(e.target.value);
         var searchItem=e.target.value;
@@ -32,9 +35,15 @@ const MethodsProvider=({children})=>{
         setModal(!modal);
         setMessageForm("");
     }   
-
+    const calculateTotalUSD=()=>{
+        let total=unitValue*amount;
+        console.log(unitValue,amount);
+        console.log(total);
+        setTotalUsd(total);
+    }
     const data={modal,busqueda,enableButton,messageForm,messageResult,setMessageResult
-               ,setMessageForm,setEnableButton,setModal,setBusqueda,handleAdd,handleChangeFilter}
+               ,setMessageForm,setEnableButton,setModal,setBusqueda,handleAdd,handleChangeFilter
+               ,totalUsd, setTotalUsd,unitValue, setunitValue,amount, setAmount,calculateTotalUSD}
     return (
         <MethodsContext.Provider value={data}>
             {children}

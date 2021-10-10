@@ -4,5 +4,6 @@ namespace businessLogic.DTO
     {
         public string nameProduct { get; set; }
         public string descriptionProduct { get; set; }
+        public string priceProduct { get; set; }
     }
 }
