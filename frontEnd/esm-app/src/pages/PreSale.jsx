@@ -16,6 +16,8 @@ import InputBase from '@material-ui/core/InputBase';
 import MethodsContext from '../contexts/MethodsContext.js';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import { getProductsAction } from '../Redux/ProductsDuck.js';
+import AddPresaleDTO from '../DTO/AddPresaleDTO';
+import { addProductToPreSale } from '../Redux/PresaleFormDuck.js';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -80,7 +82,7 @@ export default function PreSale() {
     const [validityDays, setValidityDays] = useState('');
     const [defaultDate, setDefaultDate] = useState('');
     const [idProduct, setIdProduct] = useState('');
-
+    const [nameProduct,setNameProduct]=useState('');
 
     const handleChangeV = (event) => {
         setValidity(event.target.value);
@@ -95,14 +97,22 @@ export default function PreSale() {
     };
     const handleChangeProduct = (event) => {
         setIdProduct(event.target.value);
-
+        
         let findUnitPrice = products.find(({ idProduct }) => idProduct == event.target.value)
         if (findUnitPrice != null)
+        {
             setunitValue(findUnitPrice.priceProduct);
+            setNameProduct(findUnitPrice.nameProduct);
+        }
         else
             setunitValue(0);
     }
-
+    const handleAddPresale=()=>{
+        const data=AddPresaleDTO({nameProduct,amount,unitValue,totalUsd});
+        dispatch(addProductToPreSale(data));
+        //console.log(preSaleItems);
+        handleAdd();
+    }
     const handleChangeAmount = (event) => {
         const {name,value}=event.target;
          console.log([name],value);
@@ -118,6 +128,7 @@ export default function PreSale() {
     const paymentMode = useSelector(store => store.paymentMode.array);
     const deliveryTime = useSelector(store => store.deliveryTime.array);
     const products = useSelector(store => store.products.array);
+    const preSaleItems=useSelector(store=>store.preSaleItems.array)
     const classes = useStyles();
 
     useEffect(() => {
@@ -238,13 +249,16 @@ export default function PreSale() {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+                            {preSaleItems.map((element)=>{
+                                    <tr>
+                                    <td></td>
+                                    <td>element.nameProduct</td>
+                                    <td>element.amount</td>
+                                    <td>element.unitValue</td>
+                                    <td>element.totalUsd</td>
+                                    </tr>
+                                })
+                            }
                         </tbody>
                         <tfoot>
                             <tr>
@@ -363,7 +377,7 @@ export default function PreSale() {
                                     <button onClick={() => handleAdd()}>Cancelar</button>
                                 </td>
                                 <td>
-                                    <button disabled={enableButton} >Agregar Producto</button>
+                                    <button onClick={()=>handleAddPresale()} >Agregar Producto</button>
                                 </td>
                             </tr>
                         </table>

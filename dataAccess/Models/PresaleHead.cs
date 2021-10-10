@@ -19,6 +19,5 @@ namespace dataAccess.Models
         public double totalPresale { get; set; }
         public int idTax { get; set; }
         public List<Tax> Taxes { get; set; }
-
     }
 }

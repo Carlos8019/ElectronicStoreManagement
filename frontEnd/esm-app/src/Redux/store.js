@@ -4,11 +4,13 @@ import clientReducer from './clientDucks.js';
 import PaymentModeReducer from './PaymentModeDuck.js';
 import DeliveryTimeReducer from './DeliveryTimeDuck';
 import productReducer from './ProductsDuck.js';
+import preSaleReducer from './PresaleFormDuck.js';
 const rootReducer=combineReducers({
     clients:clientReducer,
     paymentMode:PaymentModeReducer,
     deliveryTime:DeliveryTimeReducer,
-    products:productReducer
+    products:productReducer,
+    preSaleItems:preSaleReducer
 
 });
 const composeEnhancers=compose;

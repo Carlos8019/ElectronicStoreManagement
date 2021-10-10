@@ -8,7 +8,7 @@ const MethodsProvider=({children})=>{
     const [messageForm, setMessageForm] = useState("");
     const [messageResult,setMessageResult]=useState("");
     const [totalUsd, setTotalUsd] = useState(0.0);
-    const [unitValue, setunitValue] = useState(2.51);
+    const [unitValue, setunitValue] = useState(0.0);
     const [amount, setAmount] = useState(0);    
     const handleChangeFilter = (e,table,nameField) => {
         setBusqueda(e.target.value);
