@@ -3,6 +3,7 @@ export default function AddPresaleDTO(props) {
         let amount=props.amount;
         let unitValue=props.unitValue;
         let totalUsd=props.totalUsd;
-    const item={nameProduct,amount,unitValue,totalUsd};
+        let idProduct=props.idProduct;
+    const item={nameProduct,amount,unitValue,totalUsd,idProduct};
     return JSON.stringify(item);
 }

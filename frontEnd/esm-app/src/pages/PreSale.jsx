@@ -17,7 +17,7 @@ import MethodsContext from '../contexts/MethodsContext.js';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import { getProductsAction } from '../Redux/ProductsDuck.js';
 import AddPresaleDTO from '../DTO/AddPresaleDTO';
-import { addProductToPreSale,calculatePresaleItems } from '../Redux/PresaleFormDuck.js';
+import { addProductToPreSale,calculatePresaleItems,deleteItemPresale } from '../Redux/PresaleFormDuck.js';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -92,9 +92,21 @@ export default function PreSale() {
             setValidityDays(validityResult.validityDays);
         else
             setValidityDays("");
+        enabledAddProduct();
     };
+    const enabledAddProduct=()=>{
+        console.log(idClient,defaultDate,idPaymentMode,validity);
+
+        if(idClient!=='' && idClient!=='-1' && defaultDate!=='' 
+           && idPaymentMode!=='' && idPaymentMode!=='-1' 
+           && validity!=='' && validity!=='-1')
+            setEnableButton(false);
+        else
+            setEnableButton(true);
+    }
     const handleChangeClient = (event) => {
         setIdClient(event.target.value);
+        enabledAddProduct();
     };
     const handleChangeProduct = (event) => {
         setIdProduct(event.target.value);
@@ -108,7 +120,7 @@ export default function PreSale() {
             setunitValue(0);
     }
     const handleAddPresale = () => {
-        const data = AddPresaleDTO({ nameProduct, amount, unitValue, totalUsd });
+        const data = AddPresaleDTO({ nameProduct, amount, unitValue, totalUsd,idProduct });
         dispatch(addProductToPreSale(data));
         dispatch(calculatePresaleItems());
         handleAdd();
@@ -119,10 +131,24 @@ export default function PreSale() {
         //console.log([name], value);
         //setAmount(state=>({...state,amount:value}));
         setAmount(event.target.value);
+
     }
     const handleChangePm = (event) => {
         setIdPaymentMode(event.target.value);
+        enabledAddProduct();
     };
+    const handleChageDate=(event)=>{
+        //console.log(event.target.value);
+        setDefaultDate(event.target.value);
+        enabledAddProduct();
+    }
+    const handleDeleteItem=(item)=>{
+        //var find=preSaleItems.find(({idProduct})=> idProduct===item);
+        //console.log(item,find);
+        dispatch(deleteItemPresale(item));
+        dispatch(calculatePresaleItems());
+        //.find(({ idProduct }) => idProduct == event.target.value)
+    }
     const { enableButton, modal, calculateTotalUSD, totalUsd, setTotalUsd, unitValue, setunitValue, amount, setAmount, handleAdd, setEnableButton } = useContext(MethodsContext);
     const dispatch = useDispatch();
     const clients = useSelector(store => store.clients.array);
@@ -137,11 +163,12 @@ export default function PreSale() {
 
     useEffect(() => {
         calculateTotalUSD();
+        enabledAddProduct();
         dispatch(getClientsAction());
         dispatch(getPaymentModeAction());
         dispatch(getDeliveryTimeAction());
         dispatch(getProductsAction());
-    }, [amount, idProduct, preSaleItems,subtotal,iva,total])
+    }, [amount, idClient,defaultDate,idPaymentMode,validity,idProduct, preSaleItems,subtotal,iva,total,enableButton])
 
     return (
         <>
@@ -177,6 +204,7 @@ export default function PreSale() {
                                         label="Fecha"
                                         type="date"
                                         defaultValue={defaultDate}
+                                        onChange={handleChageDate}
                                         className={classes.textField}
                                         InputLabelProps={{
                                             shrink: true,
@@ -233,7 +261,7 @@ export default function PreSale() {
                         <tr>
                             <td className="text-start">
                                 <div className="create">
-                                    <button onClick={() => handleAdd()} >Agregar Producto</button>
+                                    <button disabled={enableButton} onClick={() => handleAdd()} >Agregar Producto</button>
                                 </div>
                             </td>
                             <td></td>
@@ -250,6 +278,7 @@ export default function PreSale() {
                                 <th>Cant</th>
                                 <th>Val/Unt</th>
                                 <th>Total</th>
+                                <th>Eliminar</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -260,6 +289,7 @@ export default function PreSale() {
                                     <td>{element.amount}</td>
                                     <td>{element.unitValue}</td>
                                     <td>{element.totalUsd}</td>
+                                    <td><button onClick={()=>handleDeleteItem(element.idProduct)} className="btn btn-danger">Delete</button></td>
                                 </tr>
                             ))
                             }

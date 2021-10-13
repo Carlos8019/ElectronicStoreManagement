@@ -84,7 +84,7 @@ const ProductsProvider=({children})=>{
         if(option===3)
         {
             //let value=Number.parseFloat(e.target.value);
-            setPriceProduct(FormatNumber(e.target.value));
+            setPriceProduct(e.target.value);
         }
             
         if (nameProduct && descriptionProduct) 

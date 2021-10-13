@@ -1,5 +1,5 @@
 import AddPresaleDTO from '../DTO/AddPresaleDTO';
-import {ADD_PRODUCT_TO_PRESALE,IVA,CALCULATE_PRESALE_ITEMS} from '../utilities/Constants';
+import {ADD_PRODUCT_TO_PRESALE,IVA,CALCULATE_PRESALE_ITEMS,DELETE_PRODUCT_OF_PRESALE} from '../utilities/Constants';
 import GetData from '../utilities/ApiServiceGet';
 import FormatNumber from '../utilities/FormatNumbers';
 const preSaleData = {
@@ -15,8 +15,9 @@ export default function preSaleReducer(state = preSaleData, action) {
         case ADD_PRODUCT_TO_PRESALE:
             return { ...state, array: action.payload }
         case CALCULATE_PRESALE_ITEMS:
-           
             return {...state,subTotal:action.payload.subT,totalIva:action.payload.totalIva,total:action.payload.total}
+        case DELETE_PRODUCT_OF_PRESALE:
+            return {...state,array:action.payload}
         default: return state;
     }
 
@@ -35,14 +36,27 @@ export const calculatePresaleItems=()=>(dispatch,getState)=>{
     let totalIva=0.0;
     let total=0.00;
     preSaleData.array.map((element) => {
-        subT=subT+element.totalUsd
+        subT+=FormatNumber(element.totalUsd);
     });
-    totalIva=FormatNumber(subT*IVA);
-    total=FormatNumber(subT+(subT*IVA));
+    totalIva=(subT*IVA);
+    total=(subT+totalIva);
+    console.log(subT,totalIva,IVA,total)
     
     dispatch({
         type:CALCULATE_PRESALE_ITEMS,
-        payload:{subT:subT,totalIva:totalIva,total:total}
+        payload:{subT:FormatNumber(subT),totalIva:totalIva,total:total}
     });
    
+}
+export const deleteItemPresale=(idProducto)=>(dispatch,getState)=>{
+    var find=preSaleData.array.find(({idProduct})=> idProduct===idProducto);
+    const index = preSaleData.array.indexOf(find, 0);
+    if (index > -1) {
+        preSaleData.array.splice(index,1);
+    }
+    dispatch({
+        type:DELETE_PRODUCT_OF_PRESALE,
+        payload:preSaleData.array
+    });
+    //console.log(find,index,preSaleData.array);
 }

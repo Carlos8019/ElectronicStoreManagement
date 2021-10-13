@@ -38,9 +38,10 @@ const MethodsProvider=({children})=>{
     }   
     const calculateTotalUSD=()=>{
         let total=unitValue*amount;
-        //console.log(unitValue,amount);
         //console.log(total);
-        setTotalUsd(FormatNumber(total));
+        total=FormatNumber(total);
+        //console.log(unitValue,amount,total);
+        setTotalUsd(total);
     }
     const data={modal,busqueda,enableButton,messageForm,messageResult,setMessageResult
                ,setMessageForm,setEnableButton,setModal,setBusqueda,handleAdd,handleChangeFilter
