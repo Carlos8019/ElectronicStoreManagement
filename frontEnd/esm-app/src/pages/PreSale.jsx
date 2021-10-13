@@ -17,7 +17,7 @@ import MethodsContext from '../contexts/MethodsContext.js';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import { getProductsAction } from '../Redux/ProductsDuck.js';
 import AddPresaleDTO from '../DTO/AddPresaleDTO';
-import { addProductToPreSale } from '../Redux/PresaleFormDuck.js';
+import { addProductToPreSale,calculatePresaleItems } from '../Redux/PresaleFormDuck.js';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -82,7 +82,8 @@ export default function PreSale() {
     const [validityDays, setValidityDays] = useState('');
     const [defaultDate, setDefaultDate] = useState('');
     const [idProduct, setIdProduct] = useState('');
-    const [nameProduct,setNameProduct]=useState('');
+    const [nameProduct, setNameProduct] = useState('');
+
 
     const handleChangeV = (event) => {
         setValidity(event.target.value);
@@ -97,38 +98,41 @@ export default function PreSale() {
     };
     const handleChangeProduct = (event) => {
         setIdProduct(event.target.value);
-        
+
         let findUnitPrice = products.find(({ idProduct }) => idProduct == event.target.value)
-        if (findUnitPrice != null)
-        {
+        if (findUnitPrice != null) {
             setunitValue(findUnitPrice.priceProduct);
             setNameProduct(findUnitPrice.nameProduct);
         }
         else
             setunitValue(0);
     }
-    const handleAddPresale=()=>{
-        const data=AddPresaleDTO({nameProduct,amount,unitValue,totalUsd});
+    const handleAddPresale = () => {
+        const data = AddPresaleDTO({ nameProduct, amount, unitValue, totalUsd });
         dispatch(addProductToPreSale(data));
-        //console.log(preSaleItems);
+        dispatch(calculatePresaleItems());
         handleAdd();
+        
     }
     const handleChangeAmount = (event) => {
-        const {name,value}=event.target;
-         console.log([name],value);
-         //setAmount(state=>({...state,amount:value}));
-         setAmount(event.target.value);
-    }    
+        const { name, value } = event.target;
+        //console.log([name], value);
+        //setAmount(state=>({...state,amount:value}));
+        setAmount(event.target.value);
+    }
     const handleChangePm = (event) => {
         setIdPaymentMode(event.target.value);
     };
-    const { enableButton, modal, calculateTotalUSD,totalUsd, setTotalUsd,unitValue, setunitValue,amount, setAmount, handleAdd, setEnableButton } = useContext(MethodsContext);
+    const { enableButton, modal, calculateTotalUSD, totalUsd, setTotalUsd, unitValue, setunitValue, amount, setAmount, handleAdd, setEnableButton } = useContext(MethodsContext);
     const dispatch = useDispatch();
     const clients = useSelector(store => store.clients.array);
     const paymentMode = useSelector(store => store.paymentMode.array);
     const deliveryTime = useSelector(store => store.deliveryTime.array);
     const products = useSelector(store => store.products.array);
-    const preSaleItems=useSelector(store=>store.preSaleItems.array)
+    const preSaleItems = useSelector(store => store.preSaleItems.array);
+    const subtotal=useSelector(store=>store.preSaleItems.subTotal);
+    const iva=useSelector(store=>store.preSaleItems.totalIva);
+    const total=useSelector(store=>store.preSaleItems.total);
     const classes = useStyles();
 
     useEffect(() => {
@@ -137,7 +141,7 @@ export default function PreSale() {
         dispatch(getPaymentModeAction());
         dispatch(getDeliveryTimeAction());
         dispatch(getProductsAction());
-    }, [amount,idProduct])
+    }, [amount, idProduct, preSaleItems,subtotal,iva,total])
 
     return (
         <>
@@ -249,15 +253,15 @@ export default function PreSale() {
                             </tr>
                         </thead>
                         <tbody>
-                            {preSaleItems.map((element)=>{
-                                    <tr>
-                                    <td></td>
-                                    <td>element.nameProduct</td>
-                                    <td>element.amount</td>
-                                    <td>element.unitValue</td>
-                                    <td>element.totalUsd</td>
-                                    </tr>
-                                })
+                            {preSaleItems.map((element, i) => (
+                                <tr key={i}>
+                                    <td>{(i+1)}</td>
+                                    <td>{element.nameProduct}</td>
+                                    <td>{element.amount}</td>
+                                    <td>{element.unitValue}</td>
+                                    <td>{element.totalUsd}</td>
+                                </tr>
+                            ))
                             }
                         </tbody>
                         <tfoot>
@@ -265,19 +269,19 @@ export default function PreSale() {
                                 <td></td>
                                 <td></td>
                                 <td colSpan="2">SUBTOTAL</td>
-                                <td></td>
+                                <td>{subtotal}</td>
                             </tr>
                             <tr>
                                 <td></td>
                                 <td></td>
                                 <td colSpan="2">IVA 12%</td>
-                                <td></td>
+                                <td>{iva}</td>
                             </tr>
                             <tr>
                                 <td></td>
                                 <td></td>
                                 <td colSpan="2">TOTAL</td>
-                                <td></td>
+                                <td>{total}</td>
                             </tr>
                         </tfoot>
                     </table>
@@ -302,7 +306,7 @@ export default function PreSale() {
                                             onChange={handleChangeProduct}
                                             input={<BootstrapInput />}
                                         >
-                                           <option aria-label="None" value="-1">Seleccione</option>
+                                            <option aria-label="None" value="-1">Seleccione</option>
                                             {products.map(element => (
                                                 <option value={element.idProduct}>{element.nameProduct}</option>
                                             ))
@@ -377,7 +381,7 @@ export default function PreSale() {
                                     <button onClick={() => handleAdd()}>Cancelar</button>
                                 </td>
                                 <td>
-                                    <button onClick={()=>handleAddPresale()} >Agregar Producto</button>
+                                    <button onClick={() => handleAddPresale()} >Agregar Producto</button>
                                 </td>
                             </tr>
                         </table>

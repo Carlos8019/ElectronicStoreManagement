@@ -4,6 +4,7 @@ import { NotificationManager } from "react-notifications";
 import ProductDTO from "../DTO/ProductDTO";
 import MethodsContext from "./MethodsContext";
 import GetData from "../utilities/ApiServiceGet";
+import FormatNumber from "../utilities/FormatNumbers";
 
 const ProductsContex= createContext();
 const ProductsProvider=({children})=>{
@@ -83,7 +84,7 @@ const ProductsProvider=({children})=>{
         if(option===3)
         {
             //let value=Number.parseFloat(e.target.value);
-            setPriceProduct(e.target.value);
+            setPriceProduct(FormatNumber(e.target.value));
         }
             
         if (nameProduct && descriptionProduct) 

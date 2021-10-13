@@ -1,4 +1,5 @@
 import { createContext, useState } from "react";
+import FormatNumber from "../utilities/FormatNumbers";
 
 const MethodsContext=createContext();
 const MethodsProvider=({children})=>{
@@ -37,9 +38,9 @@ const MethodsProvider=({children})=>{
     }   
     const calculateTotalUSD=()=>{
         let total=unitValue*amount;
-        console.log(unitValue,amount);
-        console.log(total);
-        setTotalUsd(total);
+        //console.log(unitValue,amount);
+        //console.log(total);
+        setTotalUsd(FormatNumber(total));
     }
     const data={modal,busqueda,enableButton,messageForm,messageResult,setMessageResult
                ,setMessageForm,setEnableButton,setModal,setBusqueda,handleAdd,handleChangeFilter
