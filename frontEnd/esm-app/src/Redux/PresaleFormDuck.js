@@ -1,5 +1,5 @@
 import AddPresaleDTO from '../DTO/AddPresaleDTO';
-import {ADD_PRODUCT_TO_PRESALE,IVA,CALCULATE_PRESALE_ITEMS,DELETE_PRODUCT_OF_PRESALE} from '../utilities/Constants';
+import {ADD_PRODUCT_TO_PRESALE,IVA,CALCULATE_PRESALE_ITEMS,DELETE_PRODUCT_OF_PRESALE,FIND_IDPRODUCT_IN_ARRAY_PRESALE} from '../utilities/Constants';
 import GetData from '../utilities/ApiServiceGet';
 import FormatNumber from '../utilities/FormatNumbers';
 const preSaleData = {
@@ -7,6 +7,7 @@ const preSaleData = {
     ,subTotal:0.00
     ,totalIva:0.00
     ,total:0.00
+    ,validateProduct:false
 }
 
 export default function preSaleReducer(state = preSaleData, action) {
@@ -18,6 +19,8 @@ export default function preSaleReducer(state = preSaleData, action) {
             return {...state,subTotal:action.payload.subT,totalIva:action.payload.totalIva,total:action.payload.total}
         case DELETE_PRODUCT_OF_PRESALE:
             return {...state,array:action.payload}
+        case FIND_IDPRODUCT_IN_ARRAY_PRESALE:
+            return {...state,validateProduct:action.payload}
         default: return state;
     }
 
@@ -58,5 +61,17 @@ export const deleteItemPresale=(idProducto)=>(dispatch,getState)=>{
         type:DELETE_PRODUCT_OF_PRESALE,
         payload:preSaleData.array
     });
-    //console.log(find,index,preSaleData.array);
+}
+export const FindItemInArray=(idProducto)=>(dispatch,getState)=>{
+    var result=false;
+    var find=preSaleData.array.find(({idProduct})=> idProduct===idProducto);
+    
+    if(typeof(find) === "undefined" || find === null)
+       result=true;
+    
+    //console.log(find,result,idProducto);
+    dispatch({
+        type:FIND_IDPRODUCT_IN_ARRAY_PRESALE,
+        payload:result
+    });
 }

@@ -3,7 +3,9 @@ import FormatNumber from "../utilities/FormatNumbers";
 
 const MethodsContext=createContext();
 const MethodsProvider=({children})=>{
+    const [width, setwidth] = useState(210);
     const [enableButton, setEnableButton] = useState(true);
+    const [enabledButton2,setEnabledButton2]=useState(true);
     const [modal, setModal] = useState(false);
     const [busqueda, setBusqueda] = useState("");
     const [messageForm, setMessageForm] = useState("");
@@ -45,7 +47,7 @@ const MethodsProvider=({children})=>{
     }
     const data={modal,busqueda,enableButton,messageForm,messageResult,setMessageResult
                ,setMessageForm,setEnableButton,setModal,setBusqueda,handleAdd,handleChangeFilter
-               ,totalUsd, setTotalUsd,unitValue, setunitValue,amount, setAmount,calculateTotalUSD}
+               ,totalUsd, setTotalUsd,unitValue, setunitValue,amount, setAmount,calculateTotalUSD,enabledButton2,setEnabledButton2}
     return (
         <MethodsContext.Provider value={data}>
             {children}

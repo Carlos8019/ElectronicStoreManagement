@@ -1,89 +1,32 @@
 import React, { useContext } from 'react';
-import { useEffect, useState, Fragment } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getClientsAction } from '../Redux/clientDucks.js'
-import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-
 import { getPaymentModeAction } from '../Redux/PaymentModeDuck.js';
 import { getDeliveryTimeAction } from '../Redux/DeliveryTimeDuck.js';
-
-import { styled } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
-import InputBase from '@material-ui/core/InputBase';
 import MethodsContext from '../contexts/MethodsContext.js';
-import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
-import { getProductsAction } from '../Redux/ProductsDuck.js';
-import AddPresaleDTO from '../DTO/AddPresaleDTO';
-import { addProductToPreSale,calculatePresaleItems,deleteItemPresale } from '../Redux/PresaleFormDuck.js';
+import {BootstrapInput,useStyles} from '../utilities/Constants.js';
+import { addProductToPreSale, calculatePresaleItems, deleteItemPresale, FindItemInArray } from '../Redux/PresaleFormDuck.js';
+import ModalService from './ModalService.js';
+import ModalProduct from './ModalProduct.js';
 
-const useStyles = makeStyles((theme) => ({
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-    },
-    textField: {
-        marginLeft: theme.spacing(1),
-        marginRight: theme.spacing(1),
-        width: 200,
-    },
-}));
-
-const BootstrapInput = styled(InputBase)(({ theme }) => ({
-    'label + &': {
-        marginTop: theme.spacing(3),
-    },
-    '& .MuiInputBase-input': {
-        borderRadius: 4,
-        position: 'relative',
-        backgroundColor: theme.palette.background.paper,
-        border: '1px solid #ced4da',
-        fontSize: 16,
-        padding: '10px 26px 10px 12px',
-        transition: theme.transitions.create(['border-color', 'box-shadow']),
-        // Use the system font instead of the default Roboto font.
-        fontFamily: [
-            '-apple-system',
-            'BlinkMacSystemFont',
-            '"Segoe UI"',
-            'Roboto',
-            '"Helvetica Neue"',
-            'Arial',
-            'sans-serif',
-            '"Apple Color Emoji"',
-            '"Segoe UI Emoji"',
-            '"Segoe UI Symbol"',
-        ].join(','),
-        '&:focus': {
-            borderRadius: 4,
-            borderColor: '#80bdff',
-            boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
-        },
-    },
-}));
 
 export default function PreSale() {
-    const [width, setwidth] = useState(210);
-
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const toggle = () => setDropdownOpen(prevState => !prevState);
-
     const [dropdownOpenPM, setDropdownOpenPM] = useState(false);
     const togglePM = () => setDropdownOpenPM(prevState => !prevState);
-
     const [dropdownOpenDT, setDropdownOpenDT] = useState(false);
     const toggleDT = () => setDropdownOpenDT(prevState => !prevState);
-
     const [validity, setValidity] = useState('');
     const [idPaymentMode, setIdPaymentMode] = useState('');
     const [idClient, setIdClient] = useState('');
     const [validityDays, setValidityDays] = useState('');
     const [defaultDate, setDefaultDate] = useState('');
-    const [idProduct, setIdProduct] = useState('');
-    const [nameProduct, setNameProduct] = useState('');
-
 
     const handleChangeV = (event) => {
         setValidity(event.target.value);
@@ -94,12 +37,10 @@ export default function PreSale() {
             setValidityDays("");
         enabledAddProduct();
     };
-    const enabledAddProduct=()=>{
-        console.log(idClient,defaultDate,idPaymentMode,validity);
-
-        if(idClient!=='' && idClient!=='-1' && defaultDate!=='' 
-           && idPaymentMode!=='' && idPaymentMode!=='-1' 
-           && validity!=='' && validity!=='-1')
+    const enabledAddProduct = () => {
+        if (idClient !== '' && idClient !== '-1' && defaultDate !== ''
+            && idPaymentMode !== '' && idPaymentMode !== '-1'
+            && validity !== '' && validity !== '-1')
             setEnableButton(false);
         else
             setEnableButton(true);
@@ -107,68 +48,44 @@ export default function PreSale() {
     const handleChangeClient = (event) => {
         setIdClient(event.target.value);
         enabledAddProduct();
-    };
-    const handleChangeProduct = (event) => {
-        setIdProduct(event.target.value);
-
-        let findUnitPrice = products.find(({ idProduct }) => idProduct == event.target.value)
-        if (findUnitPrice != null) {
-            setunitValue(findUnitPrice.priceProduct);
-            setNameProduct(findUnitPrice.nameProduct);
-        }
-        else
-            setunitValue(0);
-    }
-    const handleAddPresale = () => {
-        const data = AddPresaleDTO({ nameProduct, amount, unitValue, totalUsd,idProduct });
-        dispatch(addProductToPreSale(data));
-        dispatch(calculatePresaleItems());
-        handleAdd();
-        
-    }
-    const handleChangeAmount = (event) => {
-        const { name, value } = event.target;
-        //console.log([name], value);
-        //setAmount(state=>({...state,amount:value}));
-        setAmount(event.target.value);
-
     }
     const handleChangePm = (event) => {
         setIdPaymentMode(event.target.value);
         enabledAddProduct();
-    };
-    const handleChageDate=(event)=>{
+    }
+    const handleChageDate = (event) => {
         //console.log(event.target.value);
         setDefaultDate(event.target.value);
         enabledAddProduct();
     }
-    const handleDeleteItem=(item)=>{
-        //var find=preSaleItems.find(({idProduct})=> idProduct===item);
-        //console.log(item,find);
+    const handleDeleteItem = (item) => {
         dispatch(deleteItemPresale(item));
         dispatch(calculatePresaleItems());
-        //.find(({ idProduct }) => idProduct == event.target.value)
     }
-    const { enableButton, modal, calculateTotalUSD, totalUsd, setTotalUsd, unitValue, setunitValue, amount, setAmount, handleAdd, setEnableButton } = useContext(MethodsContext);
+    const { enableButton, modal, calculateTotalUSD, totalUsd, setTotalUsd
+        , unitValue, setunitValue, amount, setAmount, messageForm, setMessageForm,
+        setEnableButton, enabledButton2, setEnabledButton2, setModal,width } = useContext(MethodsContext);
     const dispatch = useDispatch();
     const clients = useSelector(store => store.clients.array);
     const paymentMode = useSelector(store => store.paymentMode.array);
     const deliveryTime = useSelector(store => store.deliveryTime.array);
-    const products = useSelector(store => store.products.array);
     const preSaleItems = useSelector(store => store.preSaleItems.array);
-    const subtotal=useSelector(store=>store.preSaleItems.subTotal);
-    const iva=useSelector(store=>store.preSaleItems.totalIva);
-    const total=useSelector(store=>store.preSaleItems.total);
+    const subtotal = useSelector(store => store.preSaleItems.subTotal);
+    const iva = useSelector(store => store.preSaleItems.totalIva);
+    const total = useSelector(store => store.preSaleItems.total);
     const classes = useStyles();
-
     useEffect(() => {
+        setMessageForm("");
         calculateTotalUSD();
         enabledAddProduct();
+        //handleProductButton();
         dispatch(getClientsAction());
         dispatch(getPaymentModeAction());
         dispatch(getDeliveryTimeAction());
-        dispatch(getProductsAction());
-    }, [amount, idClient,defaultDate,idPaymentMode,validity,idProduct, preSaleItems,subtotal,iva,total,enableButton])
+    }, [amount, enabledButton2, idClient, defaultDate
+        , idPaymentMode, validity,
+        , preSaleItems, subtotal, iva, total, enableButton
+        , messageForm])
 
     return (
         <>
@@ -260,15 +177,14 @@ export default function PreSale() {
                         </tr>
                         <tr>
                             <td className="text-start">
-                                <div className="create">
-                                    <button disabled={enableButton} onClick={() => handleAdd()} >Agregar Producto</button>
-                                </div>
+                                <ModalProduct />
                             </td>
-                            <td></td>
+                            <td className="text-start">
+                                    <ModalService/>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
-
                 <div className="table-responsive" >
                     <table className="table table-sm table-bordered" >
                         <thead>
@@ -284,15 +200,28 @@ export default function PreSale() {
                         <tbody>
                             {preSaleItems.map((element, i) => (
                                 <tr key={i}>
-                                    <td>{(i+1)}</td>
+                                    <td>{(i + 1)}</td>
                                     <td>{element.nameProduct}</td>
                                     <td>{element.amount}</td>
                                     <td>{element.unitValue}</td>
                                     <td>{element.totalUsd}</td>
-                                    <td><button onClick={()=>handleDeleteItem(element.idProduct)} className="btn btn-danger">Delete</button></td>
+                                    <td><button onClick={() => handleDeleteItem(element.idProduct)} className="btn btn-danger">Delete</button></td>
                                 </tr>
                             ))
                             }
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <table>
+                                        <tr>
+                                            <td className="text-start">INCLUYE:</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
                         </tbody>
                         <tfoot>
                             <tr>
@@ -317,107 +246,6 @@ export default function PreSale() {
                     </table>
                 </div>
             </div>
-            <Modal isOpen={modal}>
-                <ModalHeader>
-                </ModalHeader>
-                <ModalBody>
-                    <form>
-                        <table>
-                            <tr>
-                                <td>
-                                    <label>Producto</label>
-                                </td>
-                                <td>
-                                    <FormControl style={{ minWidth: width }} sx={{ m: 1 }} variant="standard">
-                                        <InputLabel htmlFor="demo-customized-select-native">Producto</InputLabel>
-                                        <NativeSelect
-                                            id="demo-customized-select-native"
-                                            value={idProduct}
-                                            onChange={handleChangeProduct}
-                                            input={<BootstrapInput />}
-                                        >
-                                            <option aria-label="None" value="-1">Seleccione</option>
-                                            {products.map(element => (
-                                                <option value={element.idProduct}>{element.nameProduct}</option>
-                                            ))
-                                            }
-                                        </NativeSelect>
-                                    </FormControl>
-
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>Cantidad</label>
-                                </td>
-                                <td>
-                                    <TextField style={{ minWidth: width }}
-                                        required
-                                        id="standard-required"
-                                        label="Requerido"
-                                        type="number"
-                                        variant="standard"
-                                        value={amount}
-                                        onChange={handleChangeAmount}
-                                    />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>Valor Unitario</label>
-                                </td>
-                                <td>
-                                    <TextField
-                                        id="unitValue"
-                                        label="Valor Unitario"
-                                        defaultValue={unitValue}
-                                        value={unitValue}
-                                        InputProps={{
-                                            readOnly: true,
-                                        }}
-                                        variant="standard"
-                                        size="small"
-                                    />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>Total USD</label>
-                                </td>
-                                <td>
-                                    <TextField size="small"
-                                        id="totalUsd"
-                                        label="Total en USD"
-                                        defaultValue={totalUsd}
-                                        value={totalUsd}
-                                        InputProps={{
-                                            readOnly: true,
-                                        }}
-                                        variant="standard"
-                                    />
-                                </td>
-
-                            </tr>
-
-                        </table>
-                        <p></p>
-                    </form>
-                </ModalBody>
-                <ModalFooter>
-                    <div className="create">
-                        <table>
-                            <tr>
-                                <td>
-                                    <button onClick={() => handleAdd()}>Cancelar</button>
-                                </td>
-                                <td>
-                                    <button onClick={() => handleAddPresale()} >Agregar Producto</button>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </ModalFooter>
-            </Modal>
         </>
     )
 }
