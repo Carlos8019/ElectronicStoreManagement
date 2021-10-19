@@ -1,13 +1,16 @@
 import AddPresaleDTO from '../DTO/AddPresaleDTO';
-import {ADD_PRODUCT_TO_PRESALE,IVA,CALCULATE_PRESALE_ITEMS,DELETE_PRODUCT_OF_PRESALE,FIND_IDPRODUCT_IN_ARRAY_PRESALE} from '../utilities/Constants';
+import { ADD_PRODUCT_TO_PRESALE, IVA, CALCULATE_PRESALE_ITEMS
+    , DELETE_PRODUCT_OF_PRESALE, FIND_IDPRODUCT_IN_ARRAY_PRESALE
+,ADD_SERVICE_TO_PRESALE,DELETE_SERVICE_OF_PRESALE,GET_ALL_PRESALES } from '../utilities/Constants';
 import GetData from '../utilities/ApiServiceGet';
 import FormatNumber from '../utilities/FormatNumbers';
 const preSaleData = {
     array: []
-    ,subTotal:0.00
-    ,totalIva:0.00
-    ,total:0.00
-    ,validateProduct:false
+    , arrayServices: []
+    , subTotal: 0.00
+    , totalIva: 0.00
+    , total: 0.00
+    , validateProduct: false
 }
 
 export default function preSaleReducer(state = preSaleData, action) {
@@ -15,63 +18,109 @@ export default function preSaleReducer(state = preSaleData, action) {
     switch (action.type) {
         case ADD_PRODUCT_TO_PRESALE:
             return { ...state, array: action.payload }
+        case ADD_SERVICE_TO_PRESALE:
+            //console.log(action.payload);
+            return {...state,arrayServices:action.payload}
         case CALCULATE_PRESALE_ITEMS:
-            return {...state,subTotal:action.payload.subT,totalIva:action.payload.totalIva,total:action.payload.total}
+            return { ...state, subTotal: action.payload.subT, totalIva: action.payload.totalIva, total: action.payload.total }
         case DELETE_PRODUCT_OF_PRESALE:
-            return {...state,array:action.payload}
+            return { ...state, array: action.payload }
+        case DELETE_SERVICE_OF_PRESALE:
+            return {...state,arrayServices:action.payload}
         case FIND_IDPRODUCT_IN_ARRAY_PRESALE:
-            return {...state,validateProduct:action.payload}
+            return { ...state, validateProduct: action.payload }
+        case GET_ALL_PRESALES:
+            return {...state}
         default: return state;
     }
 
 }
+export const getAllPresales=()=>(dispatch,getState)=>{
+    dispatch(
+        {
+            type:GET_ALL_PRESALES//,
+            //payload:presaleData
+        });
+}
+export const addProductToPreSale = (newItem = AddPresaleDTO,isService) => (dispatch, getState) => {
+    //const isService = newItem.isService;
+    console.log("dispatch: ",isService,newItem);
+    if (isService === 0) {
+        console.log("prodct");
+        preSaleData.array.push(JSON.parse(newItem));
+        dispatch({
+            type: ADD_PRODUCT_TO_PRESALE,
+            payload: preSaleData.array
+        });
 
-export const addProductToPreSale = (newItem = AddPresaleDTO) => (dispatch, getState) => {
-    preSaleData.array.push(JSON.parse(newItem));
-    dispatch({
-        type: ADD_PRODUCT_TO_PRESALE,
-        payload: preSaleData.array
-    });
-}
-export const calculatePresaleItems=()=>(dispatch,getState)=>{
-    
-    let subT=0.0;
-    let totalIva=0.0;
-    let total=0.00;
-    preSaleData.array.map((element) => {
-        subT+=FormatNumber(element.totalUsd);
-    });
-    totalIva=(subT*IVA);
-    total=(subT+totalIva);
-    console.log(subT,totalIva,IVA,total)
-    
-    dispatch({
-        type:CALCULATE_PRESALE_ITEMS,
-        payload:{subT:FormatNumber(subT),totalIva:totalIva,total:total}
-    });
-   
-}
-export const deleteItemPresale=(idProducto)=>(dispatch,getState)=>{
-    var find=preSaleData.array.find(({idProduct})=> idProduct===idProducto);
-    const index = preSaleData.array.indexOf(find, 0);
-    if (index > -1) {
-        preSaleData.array.splice(index,1);
     }
-    dispatch({
-        type:DELETE_PRODUCT_OF_PRESALE,
-        payload:preSaleData.array
-    });
+    else { 
+        console.log("servcice");
+        preSaleData.arrayServices.push(JSON.parse(newItem));
+        dispatch({
+            type: ADD_SERVICE_TO_PRESALE,
+            payload: preSaleData.arrayServices
+        });        
+    }
 }
-export const FindItemInArray=(idProducto)=>(dispatch,getState)=>{
-    var result=false;
-    var find=preSaleData.array.find(({idProduct})=> idProduct===idProducto);
+export const calculatePresaleItems = () => (dispatch, getState) => {
+
+    let subT = 0.0;
+    let totalIva = 0.0;
+    let total = 0.00;
+    preSaleData.array.map((element) => {
+        subT += FormatNumber(element.totalUsd);
+    });
+    totalIva = (subT * IVA);
+    total = (subT + totalIva);
+    console.log(subT, totalIva, IVA, total)
+
+    dispatch({
+        type: CALCULATE_PRESALE_ITEMS,
+        payload: { subT: FormatNumber(subT), totalIva: totalIva, total: total }
+    });
+
+}
+export const deleteItemPresale = (idProducto,isService) => (dispatch, getState) => {
     
-    if(typeof(find) === "undefined" || find === null)
-       result=true;
+    if(isService===0)
+    {
+        var find = preSaleData.array.find(({ idProduct }) => idProduct === idProducto);
+        const index = preSaleData.array.indexOf(find, 0);
+        if (index > -1) {
+            preSaleData.array.splice(index, 1);
+        }
+        dispatch({
+            type: DELETE_PRODUCT_OF_PRESALE,
+            payload: preSaleData.array
+        });
     
+    }
+    else
+    {
+        var find = preSaleData.arrayServices.find(({ idProduct }) => idProduct === idProducto);
+        const index = preSaleData.arrayServices.indexOf(find, 0);
+        console.log(find,index);
+        if (index > -1) {
+            preSaleData.arrayServices.splice(index, 1);
+        }
+        dispatch({
+            type: DELETE_SERVICE_OF_PRESALE,
+            payload: preSaleData.arrayServices
+        });
+
+    }
+}
+export const FindItemInArray = (idProducto) => (dispatch, getState) => {
+    var result = false;
+    var find = preSaleData.array.find(({ idProduct }) => idProduct === idProducto);
+
+    if (typeof (find) === "undefined" || find === null)
+        result = true;
+
     //console.log(find,result,idProducto);
     dispatch({
-        type:FIND_IDPRODUCT_IN_ARRAY_PRESALE,
-        payload:result
+        type: FIND_IDPRODUCT_IN_ARRAY_PRESALE,
+        payload: result
     });
 }

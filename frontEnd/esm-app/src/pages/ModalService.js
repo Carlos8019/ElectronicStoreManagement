@@ -7,11 +7,14 @@ import NativeSelect from '@material-ui/core/NativeSelect';
 import { getServices } from '../Redux/servicesDuck';
 import MethodsContext from '../contexts/MethodsContext.js';
 import { BootstrapInput } from '../utilities/Constants.js';
+import AddPresaleDTO from '../DTO/AddPresaleDTO';
+import { addProductToPreSale, calculatePresaleItems, deleteItemPresale, FindItemInArray } from '../Redux/PresaleFormDuck.js';
 
 export default function ModalService() {
     const dispatch = useDispatch();
     const [idServiceSelect, setIdServiceSelect] = useState('');
     const [messageFormService, setMessageFormService] = useState('');
+    const [nameService,setNameService]=useState('');
     const [enabledButtonService, setEnabledButtonService] = useState(false);
     const [modalService,setModalService]=useState(false);
     const { width } = useContext(MethodsContext);
@@ -24,19 +27,31 @@ export default function ModalService() {
             var id = event.target.value;
             if (id !== '' && id !== '-1') {
                 setIdServiceSelect(id);
-                //console.log(event.target.value, idServiceSelect);
+                let findNameService = services.find(({ idService }) => idService == id)
+                if (findNameService != null) {
+                    setNameService(findNameService.nameService);
+                }
             }
-            //setEnabledButtonService(false);enabledButtonService
         }
     }
-    const services = useSelector(store => store.services.array);
+
     const handleAddService = () => {
-        setModalService(!modalService);
-        console.log(idServiceSelect);
+        let isService=1;
+        let amount=0.0;
+        let unitValue=0.0;
+        let totalUsd=0.0;
+        //console.log(idServiceSelect,nameService);
+        const data = AddPresaleDTO({ nameProduct:nameService, amount, unitValue, totalUsd, idProduct:idServiceSelect,isService });
+        dispatch(addProductToPreSale(data,1));
+        dispatch(calculatePresaleItems());
+        handleAddModalService();
+        
     }
+    const services = useSelector(store => store.services.array);
     useEffect(() => {
+        calculatePresaleItems();
         dispatch(getServices());
-    }, [idServiceSelect, enabledButtonService])
+    }, [idServiceSelect, enabledButtonService,nameService])
     return (
         <div>
             <div className="create">

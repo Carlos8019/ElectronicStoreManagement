@@ -17,9 +17,9 @@ export default function ModalProduct() {
     const validateProduct = useSelector(store => store.preSaleItems.validateProduct);
     const [idProduct, setIdProduct] = useState('');
     const [nameProduct, setNameProduct] = useState('');
-    const { enableButton,width,setunitValue,amount
-           ,setMessageForm,modal,calculateTotalUSD,messageForm
-        ,enabledButton2,setAmount, setEnabledButton2,unitValue, setTotalUsd,totalUsd,setModal } = useContext(MethodsContext);
+    const { enableButton, width, setunitValue, amount
+        , setMessageForm, modal, calculateTotalUSD, messageForm
+        , enabledButton2, setAmount, setEnabledButton2, unitValue, setTotalUsd, totalUsd, setModal } = useContext(MethodsContext);
 
     const handleProductButton = () => {
         var result = true;
@@ -48,39 +48,39 @@ export default function ModalProduct() {
             setunitValue(0);
 
         handleProductButton();
-    }   
+    }
     const handleAdd = () => {
         cleanFieldsModalProduct();
         setModal(!modal);
         setMessageForm("");
-    }   
+    }
     const cleanFieldsModalProduct = () => {
         setIdProduct('');
         setAmount(0);
         setunitValue(0.00);
         setTotalUsd(0.00);
-    }   
+    }
     const handleAddPresale = () => {
-        const data = AddPresaleDTO({ nameProduct, amount, unitValue, totalUsd, idProduct });
-        dispatch(addProductToPreSale(data));
+        let isService=0;
+        const data = AddPresaleDTO({ nameProduct, amount, unitValue, totalUsd, idProduct,isService });
+        dispatch(addProductToPreSale(data,0));
         dispatch(calculatePresaleItems());
         handleAdd();
-    }       
+    }
     useEffect(() => {
         setMessageForm("");
         calculateTotalUSD();
         //enabledAddProduct();
         handleProductButton();
-       
         dispatch(getProductsAction());
     }, [amount, enabledButton2, idProduct
-        ,enableButton,validateProduct, messageForm])
+        , enableButton, validateProduct, messageForm])
 
     return (
         <div>
             <div className="create">
-                                    <button disabled={enableButton} onClick={() => handleAdd()} >Agregar Producto</button>
-                                </div>
+                <button disabled={enableButton} onClick={() => handleAdd()} >Agregar Producto</button>
+            </div>
             <Modal isOpen={modal}>
                 <ModalHeader>
                 </ModalHeader>
@@ -181,7 +181,7 @@ export default function ModalProduct() {
                     </div>
                 </ModalFooter>
             </Modal>
-            
+
         </div>
     )
 }

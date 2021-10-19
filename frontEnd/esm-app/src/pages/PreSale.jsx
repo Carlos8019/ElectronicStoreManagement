@@ -9,8 +9,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import MethodsContext from '../contexts/MethodsContext.js';
-import {BootstrapInput,useStyles} from '../utilities/Constants.js';
-import { addProductToPreSale, calculatePresaleItems, deleteItemPresale, FindItemInArray } from '../Redux/PresaleFormDuck.js';
+import { BootstrapInput, useStyles } from '../utilities/Constants.js';
+import { addProductToPreSale, calculatePresaleItems, deleteItemPresale, FindItemInArray,getAllPresales } from '../Redux/PresaleFormDuck.js';
 import ModalService from './ModalService.js';
 import ModalProduct from './ModalProduct.js';
 
@@ -58,18 +58,19 @@ export default function PreSale() {
         setDefaultDate(event.target.value);
         enabledAddProduct();
     }
-    const handleDeleteItem = (item) => {
-        dispatch(deleteItemPresale(item));
+    const handleDeleteItem = (item,isService) => {
+        dispatch(deleteItemPresale(item,isService));
         dispatch(calculatePresaleItems());
     }
     const { enableButton, modal, calculateTotalUSD, totalUsd, setTotalUsd
         , unitValue, setunitValue, amount, setAmount, messageForm, setMessageForm,
-        setEnableButton, enabledButton2, setEnabledButton2, setModal,width } = useContext(MethodsContext);
+        setEnableButton, enabledButton2, setEnabledButton2, setModal, width } = useContext(MethodsContext);
     const dispatch = useDispatch();
     const clients = useSelector(store => store.clients.array);
     const paymentMode = useSelector(store => store.paymentMode.array);
     const deliveryTime = useSelector(store => store.deliveryTime.array);
     const preSaleItems = useSelector(store => store.preSaleItems.array);
+    const preSaleServices = useSelector(store => store.preSaleItems.arrayServices)
     const subtotal = useSelector(store => store.preSaleItems.subTotal);
     const iva = useSelector(store => store.preSaleItems.totalIva);
     const total = useSelector(store => store.preSaleItems.total);
@@ -82,10 +83,11 @@ export default function PreSale() {
         dispatch(getClientsAction());
         dispatch(getPaymentModeAction());
         dispatch(getDeliveryTimeAction());
+        dispatch(getAllPresales());
     }, [amount, enabledButton2, idClient, defaultDate
         , idPaymentMode, validity,
         , preSaleItems, subtotal, iva, total, enableButton
-        , messageForm])
+        , messageForm, preSaleServices])
 
     return (
         <>
@@ -111,6 +113,9 @@ export default function PreSale() {
                                     </NativeSelect>
                                 </FormControl>
                             </td>
+                            <td className="text-start">
+                                <ModalProduct />
+                            </td>
                         </tr>
                         <tr>
                             <td className="text-start">Fecha:</td>
@@ -128,6 +133,9 @@ export default function PreSale() {
                                         }}
                                     />
                                 </form>
+                            </td>
+                            <td className="text-end">
+                                <ModalService />
                             </td>
                         </tr>
                         <tr>
@@ -175,14 +183,6 @@ export default function PreSale() {
                                 <InputLabel readOnly name="validityDays" id="validityDays" placeholder="Validez">{validityDays}</InputLabel>
                             </td>
                         </tr>
-                        <tr>
-                            <td className="text-start">
-                                <ModalProduct />
-                            </td>
-                            <td className="text-start">
-                                    <ModalService/>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
                 <div className="table-responsive" >
@@ -205,7 +205,7 @@ export default function PreSale() {
                                     <td>{element.amount}</td>
                                     <td>{element.unitValue}</td>
                                     <td>{element.totalUsd}</td>
-                                    <td><button onClick={() => handleDeleteItem(element.idProduct)} className="btn btn-danger">Delete</button></td>
+                                    <td><button onClick={() => handleDeleteItem(element.idProduct,0)} className="btn btn-danger">Delete</button></td>
                                 </tr>
                             ))
                             }
@@ -216,6 +216,14 @@ export default function PreSale() {
                                         <tr>
                                             <td className="text-start">INCLUYE:</td>
                                         </tr>
+                                        {preSaleServices.map((element, i) => (
+                                            <tr key={i}>
+                                                <td>{(i + 1)}</td>
+                                                <td>{element.nameProduct}</td>
+                                                <td><button onClick={() => handleDeleteItem(element.idProduct,1)} className="btn btn-danger">Delete</button></td>
+                                            </tr>
+                                        ))
+                                        }
                                     </table>
                                 </td>
                                 <td></td>
