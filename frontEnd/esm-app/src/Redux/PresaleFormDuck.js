@@ -1,7 +1,9 @@
 import AddPresaleDTO from '../DTO/AddPresaleDTO';
-import { ADD_PRODUCT_TO_PRESALE, IVA, CALCULATE_PRESALE_ITEMS
+import {
+    ADD_PRODUCT_TO_PRESALE, IVA, CALCULATE_PRESALE_ITEMS
     , DELETE_PRODUCT_OF_PRESALE, FIND_IDPRODUCT_IN_ARRAY_PRESALE
-,ADD_SERVICE_TO_PRESALE,DELETE_SERVICE_OF_PRESALE,GET_ALL_PRESALES } from '../utilities/Constants';
+    , ADD_SERVICE_TO_PRESALE, DELETE_SERVICE_OF_PRESALE, GET_ALL_PRESALES
+} from '../utilities/Constants';
 import GetData from '../utilities/ApiServiceGet';
 import FormatNumber from '../utilities/FormatNumbers';
 const preSaleData = {
@@ -19,34 +21,33 @@ export default function preSaleReducer(state = preSaleData, action) {
         case ADD_PRODUCT_TO_PRESALE:
             return { ...state, array: action.payload }
         case ADD_SERVICE_TO_PRESALE:
-            //console.log(action.payload);
-            return {...state,arrayServices:action.payload}
+            return { ...state, arrayServices: action.payload }
         case CALCULATE_PRESALE_ITEMS:
             return { ...state, subTotal: action.payload.subT, totalIva: action.payload.totalIva, total: action.payload.total }
         case DELETE_PRODUCT_OF_PRESALE:
             return { ...state, array: action.payload }
         case DELETE_SERVICE_OF_PRESALE:
-            return {...state,arrayServices:action.payload}
+            return { ...state, arrayServices: action.payload }
         case FIND_IDPRODUCT_IN_ARRAY_PRESALE:
             return { ...state, validateProduct: action.payload }
         case GET_ALL_PRESALES:
-            return {...state}
+            return { ...state,array:action.payload.array,arrayServices:action.payload.arrayServices }
         default: return state;
     }
 
 }
-export const getAllPresales=()=>(dispatch,getState)=>{
+export const getAllPresales = () => (dispatch, getState) => {
+    let array=preSaleData.array;
+    let arrayServices=preSaleData.arrayServices;
     dispatch(
         {
-            type:GET_ALL_PRESALES//,
-            //payload:presaleData
+            type: GET_ALL_PRESALES,
+            payload:{array:array,arrayServices:arrayServices}
         });
 }
-export const addProductToPreSale = (newItem = AddPresaleDTO,isService) => (dispatch, getState) => {
+export const addProductToPreSale = (newItem = AddPresaleDTO, isService) => (dispatch, getState) => {
     //const isService = newItem.isService;
-    console.log("dispatch: ",isService,newItem);
     if (isService === 0) {
-        console.log("prodct");
         preSaleData.array.push(JSON.parse(newItem));
         dispatch({
             type: ADD_PRODUCT_TO_PRESALE,
@@ -54,13 +55,12 @@ export const addProductToPreSale = (newItem = AddPresaleDTO,isService) => (dispa
         });
 
     }
-    else { 
-        console.log("servcice");
+    else {
         preSaleData.arrayServices.push(JSON.parse(newItem));
         dispatch({
             type: ADD_SERVICE_TO_PRESALE,
             payload: preSaleData.arrayServices
-        });        
+        });
     }
 }
 export const calculatePresaleItems = () => (dispatch, getState) => {
@@ -81,10 +81,9 @@ export const calculatePresaleItems = () => (dispatch, getState) => {
     });
 
 }
-export const deleteItemPresale = (idProducto,isService) => (dispatch, getState) => {
-    
-    if(isService===0)
-    {
+export const deleteItemPresale = (idProducto, isService) => (dispatch, getState) => {
+
+    if (isService === 0) {
         var find = preSaleData.array.find(({ idProduct }) => idProduct === idProducto);
         const index = preSaleData.array.indexOf(find, 0);
         if (index > -1) {
@@ -94,13 +93,12 @@ export const deleteItemPresale = (idProducto,isService) => (dispatch, getState) 
             type: DELETE_PRODUCT_OF_PRESALE,
             payload: preSaleData.array
         });
-    
+
     }
-    else
-    {
+    else {
         var find = preSaleData.arrayServices.find(({ idProduct }) => idProduct === idProducto);
         const index = preSaleData.arrayServices.indexOf(find, 0);
-        console.log(find,index);
+        console.log(find, index);
         if (index > -1) {
             preSaleData.arrayServices.splice(index, 1);
         }
@@ -111,16 +109,28 @@ export const deleteItemPresale = (idProducto,isService) => (dispatch, getState) 
 
     }
 }
-export const FindItemInArray = (idProducto) => (dispatch, getState) => {
+export const FindItemInArray = (idProducto, isService) => (dispatch, getState) => {
     var result = false;
-    var find = preSaleData.array.find(({ idProduct }) => idProduct === idProducto);
+    if (isService === 0) {
+        var find = preSaleData.array.find(({ idProduct }) => idProduct === idProducto);
 
-    if (typeof (find) === "undefined" || find === null)
-        result = true;
+        if (typeof (find) === "undefined" || find === null)
+            result = true;
+        dispatch({
+            type: FIND_IDPRODUCT_IN_ARRAY_PRESALE,
+            payload: result
+        });
+    }
+    else {
+        var find = preSaleData.arrayServices.find(({ idProduct }) => idProduct === idProducto);
+        if (typeof (find) === "undefined" || find === null) {
+            result = true;
+        }
 
-    //console.log(find,result,idProducto);
-    dispatch({
-        type: FIND_IDPRODUCT_IN_ARRAY_PRESALE,
-        payload: result
-    });
+        dispatch({
+            type: FIND_IDPRODUCT_IN_ARRAY_PRESALE,
+            payload: result
+        });
+    }
+
 }

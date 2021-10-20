@@ -8,30 +8,38 @@ import { getServices } from '../Redux/servicesDuck';
 import MethodsContext from '../contexts/MethodsContext.js';
 import { BootstrapInput } from '../utilities/Constants.js';
 import AddPresaleDTO from '../DTO/AddPresaleDTO';
-import { addProductToPreSale, calculatePresaleItems, deleteItemPresale, FindItemInArray } from '../Redux/PresaleFormDuck.js';
+import { addProductToPreSale, calculatePresaleItems, getAllPresales, FindItemInArray } from '../Redux/PresaleFormDuck.js';
 
 export default function ModalService() {
     const dispatch = useDispatch();
+    const validateProduct = useSelector(store => store.preSaleItems.validateProduct);
+    const services = useSelector(store => store.services.array);    
     const [idServiceSelect, setIdServiceSelect] = useState('');
-    const [messageFormService, setMessageFormService] = useState('');
     const [nameService,setNameService]=useState('');
     const [enabledButtonService, setEnabledButtonService] = useState(false);
-    const [modalService,setModalService]=useState(false);
-    const { width } = useContext(MethodsContext);
+    const [enabledAddButtonService,setEnabledAddButtonService]= useState(false);
+    //const [modalService,setModalService]=useState(false);
+    const [messageFormService,setMessageFormService]=useState('')
+    const {width,enableButton,modalService,setModalService,setAmount,setunitValue,setTotalUsd,amount } = useContext(MethodsContext);
 
     const handleAddModalService = () => {
+        cleanFieldsModalProduct();
         setModalService(!modalService);
+        setMessageFormService('')
     }
+
     const handleChangeService = (event) => {
         if (event) {
             var id = event.target.value;
-            if (id !== '' && id !== '-1') {
-                setIdServiceSelect(id);
+            setIdServiceSelect(id);
+            console.log(id);
+            if (id !== '' && id !== '-1' && id !== "0") {                
                 let findNameService = services.find(({ idService }) => idService == id)
                 if (findNameService != null) {
                     setNameService(findNameService.nameService);
                 }
             }
+            handleServiceButton();
         }
     }
 
@@ -40,22 +48,43 @@ export default function ModalService() {
         let amount=0.0;
         let unitValue=0.0;
         let totalUsd=0.0;
-        //console.log(idServiceSelect,nameService);
         const data = AddPresaleDTO({ nameProduct:nameService, amount, unitValue, totalUsd, idProduct:idServiceSelect,isService });
         dispatch(addProductToPreSale(data,1));
         dispatch(calculatePresaleItems());
         handleAddModalService();
+
         
     }
-    const services = useSelector(store => store.services.array);
+    const cleanFieldsModalProduct = () => {
+        setIdServiceSelect('');
+        //setMessageFormService("");
+        setAmount(0);
+        setunitValue(0.00);
+        setTotalUsd(0.00);
+    }
+    const handleServiceButton = () => {
+        var result = true;
+        if (idServiceSelect !== '' && idServiceSelect !== '-1' && idServiceSelect !== "0") {
+            dispatch(FindItemInArray(idServiceSelect,1));
+            if (validateProduct)
+                result = false;
+            else
+                setMessageFormService("El servicio seleccionado ya existe");
+        }
+        setEnabledAddButtonService(result);
+    }
     useEffect(() => {
-        calculatePresaleItems();
+        setMessageFormService("");
+        handleServiceButton();
         dispatch(getServices());
-    }, [idServiceSelect, enabledButtonService,nameService])
+        //calculateTotalUSD();
+        dispatch(getAllPresales());
+    }, [amount,idServiceSelect,validateProduct, enableButton
+        ,enabledAddButtonService,nameService,messageFormService])
     return (
         <div>
             <div className="create">
-                <button disabled={enabledButtonService} onClick={() => handleAddModalService()} >Agregar Servicio</button>
+                <button disabled={enableButton} onClick={() => handleAddModalService()} >Agregar Servicio</button>
             </div>
             <Modal isOpen={modalService}>
                 <ModalHeader>
@@ -86,7 +115,7 @@ export default function ModalService() {
                                 </td>
                             </tr>
                         </table>
-                        <p></p>
+                        <p>{messageFormService}</p>
                     </form>
                 </ModalBody>
                 <ModalFooter>
@@ -97,7 +126,7 @@ export default function ModalService() {
                                     <button onClick={() => handleAddModalService()}>Cancelar</button>
                                 </td>
                                 <td>
-                                    <button disabled={enabledButtonService} onClick={() => handleAddService()} >Agregar Servicio</button>
+                                    <button disabled={enabledAddButtonService} onClick={() => handleAddService()} >Agregar Servicio</button>
                                 </td>
                             </tr>
                         </table>

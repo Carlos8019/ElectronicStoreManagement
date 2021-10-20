@@ -19,12 +19,13 @@ export default function ModalProduct() {
     const [nameProduct, setNameProduct] = useState('');
     const { enableButton, width, setunitValue, amount
         , setMessageForm, modal, calculateTotalUSD, messageForm
-        , enabledButton2, setAmount, setEnabledButton2, unitValue, setTotalUsd, totalUsd, setModal } = useContext(MethodsContext);
+        , enabledButton2, setAmount, setEnabledButton2, unitValue
+        , setTotalUsd, totalUsd, setModal } = useContext(MethodsContext);
 
     const handleProductButton = () => {
         var result = true;
         if (amount > 0 && idProduct !== '' && idProduct !== '-1') {
-            dispatch(FindItemInArray(idProduct));
+            dispatch(FindItemInArray(idProduct,0));
             if (validateProduct)
                 result = false;
             else
@@ -70,7 +71,6 @@ export default function ModalProduct() {
     useEffect(() => {
         setMessageForm("");
         calculateTotalUSD();
-        //enabledAddProduct();
         handleProductButton();
         dispatch(getProductsAction());
     }, [amount, enabledButton2, idProduct

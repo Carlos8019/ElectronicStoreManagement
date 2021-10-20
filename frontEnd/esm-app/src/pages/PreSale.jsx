@@ -10,7 +10,8 @@ import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import MethodsContext from '../contexts/MethodsContext.js';
 import { BootstrapInput, useStyles } from '../utilities/Constants.js';
-import { addProductToPreSale, calculatePresaleItems, deleteItemPresale, FindItemInArray,getAllPresales } from '../Redux/PresaleFormDuck.js';
+import { addProductToPreSale, calculatePresaleItems
+    , deleteItemPresale, FindItemInArray,getAllPresales } from '../Redux/PresaleFormDuck.js';
 import ModalService from './ModalService.js';
 import ModalProduct from './ModalProduct.js';
 
@@ -61,6 +62,7 @@ export default function PreSale() {
     const handleDeleteItem = (item,isService) => {
         dispatch(deleteItemPresale(item,isService));
         dispatch(calculatePresaleItems());
+        dispatch(getAllPresales());
     }
     const { enableButton, modal, calculateTotalUSD, totalUsd, setTotalUsd
         , unitValue, setunitValue, amount, setAmount, messageForm, setMessageForm,
@@ -80,6 +82,7 @@ export default function PreSale() {
         calculateTotalUSD();
         enabledAddProduct();
         //handleProductButton();
+        //dispatch(getServices());
         dispatch(getClientsAction());
         dispatch(getPaymentModeAction());
         dispatch(getDeliveryTimeAction());

@@ -7,6 +7,7 @@ const MethodsProvider=({children})=>{
     const [enableButton, setEnableButton] = useState(true);
     const [enabledButton2,setEnabledButton2]=useState(true);
     const [modal, setModal] = useState(false);
+    const [modalService,setModalService]=useState(false);
     const [busqueda, setBusqueda] = useState("");
     const [messageForm, setMessageForm] = useState("");
     const [messageResult,setMessageResult]=useState("");
@@ -45,7 +46,7 @@ const MethodsProvider=({children})=>{
         //console.log(unitValue,amount,total);
         setTotalUsd(total);
     }
-    const data={modal,busqueda,enableButton,messageForm,messageResult,setMessageResult
+    const data={modalService,setModalService,modal,busqueda,enableButton,messageForm,messageResult,setMessageResult
                ,setMessageForm,setEnableButton,setModal,setBusqueda,handleAdd,handleChangeFilter
                ,totalUsd, setTotalUsd,unitValue, setunitValue,amount, setAmount,calculateTotalUSD,enabledButton2,setEnabledButton2}
     return (
