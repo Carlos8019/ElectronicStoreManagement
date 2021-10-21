@@ -10,10 +10,13 @@ import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import MethodsContext from '../contexts/MethodsContext.js';
 import { BootstrapInput, useStyles } from '../utilities/Constants.js';
-import { addProductToPreSale, calculatePresaleItems
-    , deleteItemPresale, FindItemInArray,getAllPresales } from '../Redux/PresaleFormDuck.js';
+import {
+    addProductToPreSale, calculatePresaleItems
+    , deleteItemPresale, FindItemInArray, getAllPresales
+} from '../Redux/PresaleFormDuck.js';
 import ModalService from './ModalService.js';
 import ModalProduct from './ModalProduct.js';
+//import FormatNumber from '../utilities/FormatNumbers.js';
 
 
 export default function PreSale() {
@@ -59,8 +62,8 @@ export default function PreSale() {
         setDefaultDate(event.target.value);
         enabledAddProduct();
     }
-    const handleDeleteItem = (item,isService) => {
-        dispatch(deleteItemPresale(item,isService));
+    const handleDeleteItem = (item, isService) => {
+        dispatch(deleteItemPresale(item, isService));
         dispatch(calculatePresaleItems());
         dispatch(getAllPresales());
     }
@@ -208,7 +211,18 @@ export default function PreSale() {
                                     <td>{element.amount}</td>
                                     <td>{element.unitValue}</td>
                                     <td>{element.totalUsd}</td>
-                                    <td><button onClick={() => handleDeleteItem(element.idProduct,0)} className="btn btn-danger">Delete</button></td>
+                                    <td><button onClick={() => handleDeleteItem(element.idProduct, 0)} className="btn btn-danger">Delete</button></td>
+                                </tr>
+                            ))
+                            }
+                            {preSaleServices.map((element, i) => (
+                                <tr key={i}>
+                                    <td>{(i + 1)}</td>
+                                    <td>{element.nameProduct}</td>
+                                    <td></td>
+                                    <td>{element.unitValue}</td>
+                                    <td>{element.unitValue}</td>
+                                    <td><button onClick={() => handleDeleteItem(element.idProduct, 1)} className="btn btn-danger">Delete</button></td>
                                 </tr>
                             ))
                             }
@@ -219,14 +233,6 @@ export default function PreSale() {
                                         <tr>
                                             <td className="text-start">INCLUYE:</td>
                                         </tr>
-                                        {preSaleServices.map((element, i) => (
-                                            <tr key={i}>
-                                                <td>{(i + 1)}</td>
-                                                <td>{element.nameProduct}</td>
-                                                <td><button onClick={() => handleDeleteItem(element.idProduct,1)} className="btn btn-danger">Delete</button></td>
-                                            </tr>
-                                        ))
-                                        }
                                     </table>
                                 </td>
                                 <td></td>

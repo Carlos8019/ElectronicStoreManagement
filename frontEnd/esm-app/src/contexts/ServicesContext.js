@@ -12,6 +12,7 @@ const ServiceProvider=({children})=>{
     const [tableServices, setTableServices]=useState([]);
     const [nameService,setNameService]=useState("");
     const [descriptionService,setDescriptionService]=useState("");
+    const [priceService,setPriceService]=useState(0.00);
     const [messageResult,setMessageResult]=useState("");
     const [messageForm,setMessageForm]=useState("");
     const getDataServices=()=>{
@@ -27,13 +28,13 @@ const ServiceProvider=({children})=>{
     const handleSubmitServices=(e)=>{
         e.preventDefault();
 
-        if (!nameService || !descriptionService) {
+        if (!nameService || !descriptionService  || (priceService===0)) {
             setMessageForm("Ingrese información en todos los campos");
         }
         else {
             setMessageForm("Ejecutando...");
             setEnableButton(false);
-            const service =ServiceDTO({nameService,descriptionService});
+            const service =ServiceDTO({nameService,descriptionService,priceService});
             postData("saveService",service)
                 .then((response) => {
                     if (response.data) {
@@ -66,13 +67,15 @@ const ServiceProvider=({children})=>{
         
         if(option===2)
             setDescriptionService(e.target.value);
+        if(option===3)
+            setPriceService(e.target.value);
 
-        if (nameService && descriptionService) 
+        if (nameService && descriptionService && priceService>=1) 
             setEnableButton(false);
     }
 
     const data={nameService,descriptionService,messageResult,tableServices,setMessageResult,getDataServices,handleSubmitServices
-               ,handleServiceChange,handleChangeFilterServices,messageForm }
+               ,handleServiceChange,handleChangeFilterServices,messageForm,priceService,setPriceService }
     return (
         <ServicesContext.Provider value={data}>
             {children}

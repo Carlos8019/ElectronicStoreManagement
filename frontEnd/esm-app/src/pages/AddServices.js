@@ -8,8 +8,8 @@ import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 export default function AddServices() {
     const { nameService, messageResult, tableServices, descriptionService
         , setMessageResult, handleSubmitServices, handleServiceChange
-        , handleChangeFilterServices,messageForm,getDataServices } = useContext(ServicesContext);
-    const { enableButton, modal, busqueda, handleChangeFilter, handleAdd,setEnableButton } = useContext(MethodsContext);
+        , handleChangeFilterServices, messageForm, getDataServices,priceService,setPriceService } = useContext(ServicesContext);
+    const { enableButton, modal, busqueda, handleChangeFilter, handleAdd, setEnableButton } = useContext(MethodsContext);
     useEffect(() => {
         setMessageResult("");
         setEnableButton(true);
@@ -38,6 +38,7 @@ export default function AddServices() {
                             <tr>
                                 <th>ID</th>
                                 <th>Servicio</th>
+                                <th>Precio</th>
                                 <th>Descripcion</th>
                             </tr>
                         </thead>
@@ -46,6 +47,7 @@ export default function AddServices() {
                             <tr key={valor.idService}>
                                 <td>{valor.idService}</td>
                                 <td>{valor.nameService}</td>
+                                <td>{valor.priceService}</td>
                                 <td>{valor.descriptionService}</td>
                             </tr >
                         ))
@@ -65,6 +67,13 @@ export default function AddServices() {
                             required
                             value={nameService}
                             onChange={(e) => handleServiceChange(e, 1)}
+                        />
+                        <label>Precio</label>
+                        <input
+                            type="number"
+                            required
+                            value={priceService}
+                            onChange={(e) => handleServiceChange(e, 3)}
                         />
                         <label>Descripcion Servicio</label>
                         <input
