@@ -67,14 +67,14 @@ export default function AddServices() {
                             required
                             value={nameService}
                             onChange={(e) => handleServiceChange(e, 1)}
-                        />
+                        /><br/>
                         <label>Precio</label>
                         <input
                             type="number"
                             required
                             value={priceService}
                             onChange={(e) => handleServiceChange(e, 3)}
-                        />
+                        /><br/>
                         <label>Descripcion Servicio</label>
                         <input
                             type="text"

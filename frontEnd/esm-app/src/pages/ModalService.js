@@ -9,6 +9,7 @@ import MethodsContext from '../contexts/MethodsContext.js';
 import { BootstrapInput } from '../utilities/Constants.js';
 import AddPresaleDTO from '../DTO/AddPresaleDTO';
 import { addProductToPreSale, calculatePresaleItems, getAllPresales, FindItemInArray } from '../Redux/PresaleFormDuck.js';
+import TextField from '@material-ui/core/TextField';
 
 export default function ModalService() {
     const dispatch = useDispatch();
@@ -16,6 +17,7 @@ export default function ModalService() {
     const services = useSelector(store => store.services.array);    
     const [idServiceSelect, setIdServiceSelect] = useState('');
     const [nameService,setNameService]=useState('');
+    const [priceService,setPriceService]=useState(0.00);
     const [enabledButtonService, setEnabledButtonService] = useState(false);
     const [enabledAddButtonService,setEnabledAddButtonService]= useState(false);
     //const [modalService,setModalService]=useState(false);
@@ -37,6 +39,7 @@ export default function ModalService() {
                 let findNameService = services.find(({ idService }) => idService == id)
                 if (findNameService != null) {
                     setNameService(findNameService.nameService);
+                    setPriceService(findNameService.priceService);
                 }
             }
             handleServiceButton();
@@ -44,15 +47,15 @@ export default function ModalService() {
     }
 
     const handleAddService = () => {
-        let isService=1;
+        let isService=0;
         let amount=0.0;
-        let unitValue=0.0;
-        let totalUsd=0.0;
+        let unitValue=priceService;
+        let totalUsd=priceService;
         const data = AddPresaleDTO({ nameProduct:nameService, amount, unitValue, totalUsd, idProduct:idServiceSelect,isService });
         dispatch(addProductToPreSale(data,1));
         dispatch(calculatePresaleItems());
         handleAddModalService();
-
+        
         
     }
     const cleanFieldsModalProduct = () => {
@@ -79,7 +82,7 @@ export default function ModalService() {
         dispatch(getServices());
         //calculateTotalUSD();
         dispatch(getAllPresales());
-    }, [amount,idServiceSelect,validateProduct, enableButton
+    }, [amount,priceService,idServiceSelect,validateProduct, enableButton
         ,enabledAddButtonService,nameService,messageFormService])
     return (
         <div>
@@ -114,6 +117,24 @@ export default function ModalService() {
                                     </FormControl>
                                 </td>
                             </tr>
+                            <tr>
+                                <td>
+                                    <label>Valor</label>
+                                </td>
+                                <td>
+                                    <TextField
+                                        id="priceService"
+                                        label="Valor"
+                                        defaultValue={priceService}
+                                        value={priceService}
+                                        InputProps={{
+                                            readOnly: true,
+                                        }}
+                                        variant="standard"
+                                        size="small"
+                                    />
+                                </td>
+                            </tr>                            
                         </table>
                         <p>{messageFormService}</p>
                     </form>

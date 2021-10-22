@@ -80,6 +80,7 @@ export default function PreSale() {
     const iva = useSelector(store => store.preSaleItems.totalIva);
     const total = useSelector(store => store.preSaleItems.total);
     const classes = useStyles();
+    //console.log(preSaleServices);
     useEffect(() => {
         setMessageForm("");
         calculateTotalUSD();
@@ -165,10 +166,10 @@ export default function PreSale() {
                             </td>
                         </tr>
                         <tr>
-                            <td className="text-start">Validez:</td>
+                            <td className="text-start">Tiempo de Entrega:</td>
                             <td className="text-start">
                                 <FormControl style={{ minWidth: width }} sx={{ m: 1 }} variant="standard">
-                                    <InputLabel htmlFor="demo-customized-select-native">Validez</InputLabel>
+                                    <InputLabel htmlFor="demo-customized-select-native">Tiempo Entrega</InputLabel>
                                     <NativeSelect
                                         id="demo-customized-select-native"
                                         value={validity}
@@ -184,9 +185,9 @@ export default function PreSale() {
                                 </FormControl>
                             </td>
                         </tr>
-                        <tr><td className="text-start">Dias de validez</td>
+                        <tr><td className="text-start">Validez</td>
                             <td className="text-start">
-                                <InputLabel readOnly name="validityDays" id="validityDays" placeholder="Validez">{validityDays}</InputLabel>
+                                <InputLabel readOnly name="validityDays" id="validityDays" placeholder="Validez">{validityDays} dias</InputLabel>
                             </td>
                         </tr>
                     </tbody>
@@ -221,7 +222,7 @@ export default function PreSale() {
                                     <td>{element.nameProduct}</td>
                                     <td></td>
                                     <td>{element.unitValue}</td>
-                                    <td>{element.unitValue}</td>
+                                    <td>{element.totalUsd}</td>
                                     <td><button onClick={() => handleDeleteItem(element.idProduct, 1)} className="btn btn-danger">Delete</button></td>
                                 </tr>
                             ))
