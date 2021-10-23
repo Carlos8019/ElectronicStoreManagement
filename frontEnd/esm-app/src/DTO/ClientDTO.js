@@ -3,7 +3,8 @@ export default function ClientDTO(props) {
     let phone=props.phone;
     let address=props.address;
     let email=props.email;
-    const client={nameClient,phone,address,email};
+    let idnClient=props.idnClient
+    const client={nameClient,phone,address,email,idnClient};
     return JSON.stringify(client);
 }
 

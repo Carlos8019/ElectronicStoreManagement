@@ -14,7 +14,7 @@ const ClientProvider = ({ children }) => {
     const [address, setaddress] = useState('');
     const [email, setemail] = useState('');
     const [errorEmail, setErrorEmail] = useState('');
-
+    const [idnClient,setIdnClient]=useState('');
     const [clientes, setClientes] = useState([]);
     const [tablaClientes, setTablaClientes] = useState([]);
 
@@ -43,7 +43,7 @@ const ClientProvider = ({ children }) => {
         else {
             setMessageForm("Ejecutando...");
             setEnableButton(false);
-            const client = ClientDTO({ nameClient, phone, address, email });
+            const client = ClientDTO({ nameClient, phone, address, email,idnClient });
             postData("saveClient",client)
                 .then((response) => {
                     if (response.data) {
@@ -91,6 +91,8 @@ const ClientProvider = ({ children }) => {
 
         if(option===4)
             validateEmail(e.target.value);
+        if(option===5)
+            setIdnClient(e.target.value);
 
     }
     const cleanFields=()=>{
@@ -98,9 +100,10 @@ const ClientProvider = ({ children }) => {
         setphone("");
         setaddress("");
         setemail("");
+        setIdnClient("");
     }
 
-    const data={nameClient,address,phone,email,errorEmail,clientes,tablaClientes
+    const data={idnClient,nameClient,address,phone,email,errorEmail,clientes,tablaClientes
         ,handleSubmitClient,handleChangeClients,setErrorEmail,cleanFields,getDataClientes
         ,setTablaClientes,setClientes,handleChange}
     return (

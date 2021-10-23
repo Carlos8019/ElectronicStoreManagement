@@ -9,13 +9,13 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import MethodsContext from '../contexts/MethodsContext.js';
-import { BootstrapInput, useStyles } from '../utilities/Constants.js';
-import {
-    addProductToPreSale, calculatePresaleItems
+import { BootstrapInput, useStyles,VALIDITY_DAYS } from '../utilities/Constants.js';
+import {addProductToPreSale, calculatePresaleItems
     , deleteItemPresale, FindItemInArray, getAllPresales
 } from '../Redux/PresaleFormDuck.js';
 import ModalService from './ModalService.js';
 import ModalProduct from './ModalProduct.js';
+import ModalCommentaries from './ModalCommentaries.js';
 //import FormatNumber from '../utilities/FormatNumbers.js';
 
 
@@ -34,11 +34,14 @@ export default function PreSale() {
 
     const handleChangeV = (event) => {
         setValidity(event.target.value);
+        setValidityDays(VALIDITY_DAYS);
+        /*
         let validityResult = deliveryTime.find(({ idDeliveryTime }) => idDeliveryTime == event.target.value)
         if (validityResult != null)
             setValidityDays(validityResult.validityDays);
         else
             setValidityDays("");
+            */
         enabledAddProduct();
     };
     const enabledAddProduct = () => {
@@ -75,26 +78,23 @@ export default function PreSale() {
     const paymentMode = useSelector(store => store.paymentMode.array);
     const deliveryTime = useSelector(store => store.deliveryTime.array);
     const preSaleItems = useSelector(store => store.preSaleItems.array);
-    const preSaleServices = useSelector(store => store.preSaleItems.arrayServices)
+    const preSaleServices = useSelector(store => store.preSaleItems.arrayServices);
+    const presaleCommentaries=useSelector(store=>store.preSaleItems.arrayCommentaries);
     const subtotal = useSelector(store => store.preSaleItems.subTotal);
     const iva = useSelector(store => store.preSaleItems.totalIva);
     const total = useSelector(store => store.preSaleItems.total);
     const classes = useStyles();
-    //console.log(preSaleServices);
     useEffect(() => {
         setMessageForm("");
         calculateTotalUSD();
         enabledAddProduct();
-        //handleProductButton();
-        //dispatch(getServices());
         dispatch(getClientsAction());
         dispatch(getPaymentModeAction());
         dispatch(getDeliveryTimeAction());
         dispatch(getAllPresales());
-    }, [amount, enabledButton2, idClient, defaultDate
-        , idPaymentMode, validity,
-        , preSaleItems, subtotal, iva, total, enableButton
-        , messageForm, preSaleServices])
+    }, [amount, enabledButton2, idClient, defaultDate, 
+        idPaymentMode, validity, preSaleItems, subtotal, 
+        iva, total, enableButton, messageForm, preSaleServices,presaleCommentaries])
 
     return (
         <>
@@ -163,6 +163,9 @@ export default function PreSale() {
                                         }
                                     </NativeSelect>
                                 </FormControl>
+                            </td>
+                            <td className="text-end">
+                                <ModalCommentaries />
                             </td>
                         </tr>
                         <tr>

@@ -22,7 +22,7 @@ export default function ModalService() {
     const [enabledAddButtonService,setEnabledAddButtonService]= useState(false);
     //const [modalService,setModalService]=useState(false);
     const [messageFormService,setMessageFormService]=useState('')
-    const {width,enableButton,modalService,setModalService,setAmount,setunitValue,setTotalUsd,amount } = useContext(MethodsContext);
+    const {width,enableButton,modalService,setModalService,setAmount,setunitValue,setTotalUsd,amount,calculateTotalUSD } = useContext(MethodsContext);
 
     const handleAddModalService = () => {
         cleanFieldsModalProduct();
@@ -47,12 +47,12 @@ export default function ModalService() {
     }
 
     const handleAddService = () => {
-        let isService=0;
+        let isService=1;
         let amount=0.0;
         let unitValue=priceService;
         let totalUsd=priceService;
         const data = AddPresaleDTO({ nameProduct:nameService, amount, unitValue, totalUsd, idProduct:idServiceSelect,isService });
-        dispatch(addProductToPreSale(data,1));
+        dispatch(addProductToPreSale(data,isService));
         dispatch(calculatePresaleItems());
         handleAddModalService();
         
@@ -78,6 +78,7 @@ export default function ModalService() {
     }
     useEffect(() => {
         setMessageFormService("");
+        calculateTotalUSD();
         handleServiceButton();
         dispatch(getServices());
         //calculateTotalUSD();

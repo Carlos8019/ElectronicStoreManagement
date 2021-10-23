@@ -26,7 +26,7 @@ function GridClients() {
                 <table className="table table-sm table-bordered" >
                     <thead>
                         <tr>
-                            <th>ID</th> 
+                            <th>RUC</th> 
                             <th>Nombre</th> 
                             <th>Telefono</th>
                             <th>Direccion</th> 
@@ -36,7 +36,7 @@ function GridClients() {
                     <tbody> {clientes && clientes.map((valor) => 
                     (
                     <tr key={valor.idClient}>
-                        <td>{valor.idClient}</td> 
+                        <td>{valor.idnClient}</td> 
                         <td>{valor.nameClient}</td> 
                         <td>{valor.phoneClient}</td> 
                         <td>{valor.addressClient}</td> 

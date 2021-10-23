@@ -10,6 +10,7 @@ namespace dataAccess.Models
         public string phoneClient { get; set; }
         public string addressClient { get; set; }
         public string emailClient { get; set; }
+        public string idnClient{ get; set; }
         public Clients()
         {
         }
@@ -19,6 +20,7 @@ namespace dataAccess.Models
             this.phoneClient=obj.phone;
             this.addressClient=obj.address;
             this.emailClient=obj.email;
+            this.idnClient=obj.idnClient;
         }
     }
 }

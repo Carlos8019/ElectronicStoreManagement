@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 export const baseURL="https://localhost:5001/Data/";
 export const IVA=0.12;
 export const numberPlaceDecimal=2;
+export const VALIDITY_DAYS=90;
 //api paths
 export const GET_ALL_CLIENTS="getAllClients";
 export const GET_ALL_PAYMENT_MODE="getAllPaymentMode";

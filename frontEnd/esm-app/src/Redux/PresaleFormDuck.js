@@ -9,6 +9,7 @@ import FormatNumber from '../utilities/FormatNumbers';
 const preSaleData = {
     array: []
     , arrayServices: []
+    ,arrayCommentaries:[]
     , subTotal: 0.00
     , totalIva: 0.00
     , total: 0.00
@@ -71,9 +72,12 @@ export const calculatePresaleItems = () => (dispatch, getState) => {
     preSaleData.array.map((element) => {
         subT += FormatNumber(element.totalUsd);
     });
+    preSaleData.arrayServices.map((element)=>{
+        subT += FormatNumber(element.totalUsd);
+    });
     totalIva = (subT * IVA);
     total = (subT + totalIva);
-    console.log(subT, totalIva, IVA, total)
+    //console.log(subT, totalIva, IVA, total)
 
     dispatch({
         type: CALCULATE_PRESALE_ITEMS,

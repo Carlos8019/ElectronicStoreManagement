@@ -4,7 +4,7 @@ import ClientContext from '../contexts/ClientContext';
 import MethodsContext from '../contexts/MethodsContext';
 
 export default function FormClients() {
-    const{nameClient,address,phone,email,errorEmail,handleSubmit,handleChange,cleanFields}=useContext(ClientContext);
+    const{idnClient,nameClient,address,phone,email,errorEmail,handleSubmit,handleChange,cleanFields}=useContext(ClientContext);
     const{messageForm,setMessageForm,setEnableButton}=useContext(MethodsContext);
     useEffect(() => {
         setEnableButton(true);
@@ -17,6 +17,9 @@ export default function FormClients() {
                 <form onSubmit={handleSubmit} >
                             <label>Nombre</label>
                             <input type="text" required value={nameClient} onChange={(e) => handleChange(e,1)} />
+
+                            <label>RUC</label>
+                            <input type="text" required value={idnClient} onChange={(e) => handleChange(e,5)} />
 
                             <label>Teléfono</label>
                             <input type="text" required value={phone} onChange={(e) => handleChange(e,2)} />
