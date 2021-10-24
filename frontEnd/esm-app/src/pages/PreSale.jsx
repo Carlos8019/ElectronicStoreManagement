@@ -9,10 +9,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import MethodsContext from '../contexts/MethodsContext.js';
-import { BootstrapInput, useStyles,VALIDITY_DAYS } from '../utilities/Constants.js';
-import {addProductToPreSale, calculatePresaleItems
-    , deleteItemPresale, FindItemInArray, getAllPresales
-} from '../Redux/PresaleFormDuck.js';
+import { BootstrapInput, useStyles, VALIDITY_DAYS } from '../utilities/Constants.js';
+import {calculatePresaleItems, deleteItemPresale, deleteItemCommentaries, getAllPresales} from '../Redux/PresaleFormDuck.js';
 import ModalService from './ModalService.js';
 import ModalProduct from './ModalProduct.js';
 import ModalCommentaries from './ModalCommentaries.js';
@@ -68,6 +66,11 @@ export default function PreSale() {
     const handleDeleteItem = (item, isService) => {
         dispatch(deleteItemPresale(item, isService));
         dispatch(calculatePresaleItems());
+        //dispatch(getAllPresales());
+    }
+    const handleDeleteComment=(index)=>{
+        dispatch(deleteItemCommentaries(index));
+        dispatch(calculatePresaleItems());
         dispatch(getAllPresales());
     }
     const { enableButton, modal, calculateTotalUSD, totalUsd, setTotalUsd
@@ -79,7 +82,7 @@ export default function PreSale() {
     const deliveryTime = useSelector(store => store.deliveryTime.array);
     const preSaleItems = useSelector(store => store.preSaleItems.array);
     const preSaleServices = useSelector(store => store.preSaleItems.arrayServices);
-    const presaleCommentaries=useSelector(store=>store.preSaleItems.arrayCommentaries);
+    const preSaleCommentaries = useSelector(store => store.preSaleItems.arrayCommentaries);
     const subtotal = useSelector(store => store.preSaleItems.subTotal);
     const iva = useSelector(store => store.preSaleItems.totalIva);
     const total = useSelector(store => store.preSaleItems.total);
@@ -92,9 +95,9 @@ export default function PreSale() {
         dispatch(getPaymentModeAction());
         dispatch(getDeliveryTimeAction());
         dispatch(getAllPresales());
-    }, [amount, enabledButton2, idClient, defaultDate, 
-        idPaymentMode, validity, preSaleItems, subtotal, 
-        iva, total, enableButton, messageForm, preSaleServices,presaleCommentaries])
+    }, [amount, enabledButton2, idClient, defaultDate,
+        idPaymentMode, validity, preSaleItems, subtotal,
+        iva, total, enableButton, messageForm, preSaleServices,preSaleCommentaries])
 
     return (
         <>
@@ -237,6 +240,13 @@ export default function PreSale() {
                                         <tr>
                                             <td className="text-start">INCLUYE:</td>
                                         </tr>
+                                        {preSaleCommentaries.map((element, i) => (
+                                            <tr key={i}>
+                                                <td>{element}</td>
+                                                <td><button onClick={() => handleDeleteComment(i)} className="btn btn-danger">Delete</button></td>
+                                            </tr>
+                                        ))
+                                        }
                                     </table>
                                 </td>
                                 <td></td>

@@ -14,7 +14,8 @@ const MethodsProvider=({children})=>{
     const [messageResult,setMessageResult]=useState("");
     const [totalUsd, setTotalUsd] = useState(0.0);
     const [unitValue, setunitValue] = useState(0.0);
-    const [amount, setAmount] = useState(0);    
+    const [amount, setAmount] = useState(0);  
+    const [comment,setComment]=useState("");  
     const [enabledAddButtonCommentaries,setEnabledAddButtonCommentaries]=useState(true);
     const handleChangeFilter = (e,table,nameField) => {
         setBusqueda(e.target.value);
@@ -48,7 +49,7 @@ const MethodsProvider=({children})=>{
         //console.log(unitValue,amount,total);
         setTotalUsd(total);
     }
-    const data={enabledAddButtonCommentaries,setEnabledAddButtonCommentaries,modalCommentaries,setModalCommentaries,modalService,setModalService,modal,busqueda,enableButton,messageForm,messageResult,setMessageResult
+    const data={comment,setComment,enabledAddButtonCommentaries,setEnabledAddButtonCommentaries,modalCommentaries,setModalCommentaries,modalService,setModalService,modal,busqueda,enableButton,messageForm,messageResult,setMessageResult
                ,setMessageForm,setEnableButton,setModal,setBusqueda,handleAdd,handleChangeFilter
                ,totalUsd, setTotalUsd,unitValue, setunitValue,amount, setAmount,calculateTotalUSD,enabledButton2,setEnabledButton2}
     return (
