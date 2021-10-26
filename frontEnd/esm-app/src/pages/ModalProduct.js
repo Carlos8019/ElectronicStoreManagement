@@ -7,7 +7,6 @@ import TextField from '@material-ui/core/TextField';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import MethodsContext from '../contexts/MethodsContext.js';
 import { BootstrapInput } from '../utilities/Constants.js';
-import AddPresaleDTO from '../DTO/AddPresaleDTO';
 import { addProductToPreSale, calculatePresaleItems, deleteItemPresale, FindItemInArray } from '../Redux/PresaleFormDuck.js';
 import { getProductsAction } from '../Redux/ProductsDuck.js';
 
@@ -15,12 +14,11 @@ export default function ModalProduct() {
     const dispatch = useDispatch();
     const products = useSelector(store => store.products.array);
     const validateProduct = useSelector(store => store.preSaleItems.validateProduct);
-    const [idProduct, setIdProduct] = useState('');
-    const [nameProduct, setNameProduct] = useState('');
-    const { enableButton, width, setunitValue, amount
+    
+    const { idProduct, setIdProduct,nameProduct, setNameProduct,enableButton, width, setunitValue, amount
         , setMessageForm, modal, calculateTotalUSD, messageForm
         , enabledButton2, setAmount, setEnabledButton2, unitValue
-        , setTotalUsd, totalUsd, setModal } = useContext(MethodsContext);
+        , setTotalUsd, totalUsd, setModal,addNewItemPreSale } = useContext(MethodsContext);
 
     const handleProductButton = () => {
         var result = true;
@@ -63,7 +61,8 @@ export default function ModalProduct() {
     }
     const handleAddPresale = () => {
         let isService=0;
-        const data = AddPresaleDTO({ nameProduct, amount, unitValue, totalUsd, idProduct,isService });
+        const data = addNewItemPreSale(nameProduct, amount, unitValue, totalUsd, idProduct,isService);
+        //AddPresaleDTO({ nameProduct, amount, unitValue, totalUsd, idProduct,isService });
         dispatch(addProductToPreSale(data,0));
         dispatch(calculatePresaleItems());
         handleAdd();
@@ -73,7 +72,7 @@ export default function ModalProduct() {
         calculateTotalUSD();
         handleProductButton();
         dispatch(getProductsAction());
-    }, [amount, enabledButton2, idProduct
+    }, [amount, enabledButton2, idProduct,idProduct, nameProduct
         , enableButton, validateProduct, messageForm])
 
     return (

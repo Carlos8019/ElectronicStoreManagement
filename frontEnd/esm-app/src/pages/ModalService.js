@@ -7,7 +7,7 @@ import NativeSelect from '@material-ui/core/NativeSelect';
 import { getServices } from '../Redux/servicesDuck';
 import MethodsContext from '../contexts/MethodsContext.js';
 import { BootstrapInput } from '../utilities/Constants.js';
-import AddPresaleDTO from '../DTO/AddPresaleDTO';
+//import AddPresaleDTO from '../DTO/AddPresaleDTO';
 import { addProductToPreSale, calculatePresaleItems, getAllPresales, FindItemInArray } from '../Redux/PresaleFormDuck.js';
 import TextField from '@material-ui/core/TextField';
 
@@ -22,7 +22,7 @@ export default function ModalService() {
     const [enabledAddButtonService,setEnabledAddButtonService]= useState(false);
     //const [modalService,setModalService]=useState(false);
     const [messageFormService,setMessageFormService]=useState('')
-    const {width,enableButton,modalService,setModalService,setAmount,setunitValue,setTotalUsd,amount,calculateTotalUSD } = useContext(MethodsContext);
+    const {addNewItemPreSale,width,enableButton,modalService,setModalService,setAmount,setunitValue,setTotalUsd,amount,calculateTotalUSD } = useContext(MethodsContext);
 
     const handleAddModalService = () => {
         cleanFieldsModalProduct();
@@ -51,7 +51,8 @@ export default function ModalService() {
         let amount=0.0;
         let unitValue=priceService;
         let totalUsd=priceService;
-        const data = AddPresaleDTO({ nameProduct:nameService, amount, unitValue, totalUsd, idProduct:idServiceSelect,isService });
+        const data = addNewItemPreSale(nameService,amount,unitValue,totalUsd,idServiceSelect,isService);
+        //AddPresaleDTO({ nameProduct:nameService, amount, unitValue, totalUsd, idProduct:idServiceSelect,isService });
         dispatch(addProductToPreSale(data,isService));
         dispatch(calculatePresaleItems());
         handleAddModalService();

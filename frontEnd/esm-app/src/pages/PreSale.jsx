@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getClientsAction } from '../Redux/clientDucks.js'
@@ -10,7 +10,7 @@ import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import MethodsContext from '../contexts/MethodsContext.js';
 import { BootstrapInput, useStyles, VALIDITY_DAYS } from '../utilities/Constants.js';
-import {calculatePresaleItems, deleteItemPresale, deleteItemCommentaries, getAllPresales} from '../Redux/PresaleFormDuck.js';
+import {calculatePresaleItems, deleteItemPresale, deleteItemCommentaries, getAllPresales,getPresaleComments} from '../Redux/PresaleFormDuck.js';
 import ModalService from './ModalService.js';
 import ModalProduct from './ModalProduct.js';
 import ModalCommentaries from './ModalCommentaries.js';
@@ -18,6 +18,21 @@ import ModalCommentaries from './ModalCommentaries.js';
 
 
 export default function PreSale() {
+    const dispatch = useDispatch();
+    const clients = useSelector(store => store.clients.array);
+    const paymentMode = useSelector(store => store.paymentMode.array);
+    const deliveryTime = useSelector(store => store.deliveryTime.array);
+    const preSaleItems = useSelector(store => store.preSaleItems.array);
+    const preSaleServices = useSelector(store => store.preSaleItems.arrayServices);
+    const preSaleCommentaries = useSelector(store => store.preSaleItems.arrayCommentaries);
+    const subtotal = useSelector(store => store.preSaleItems.subTotal);
+    const iva = useSelector(store => store.preSaleItems.totalIva);
+    const total = useSelector(store => store.preSaleItems.total);
+
+    const { enableButton, modal, calculateTotalUSD, totalUsd, setTotalUsd
+        , unitValue, setunitValue, amount, setAmount, messageForm, setMessageForm,
+        setEnableButton, enabledButton2, setEnabledButton2, setModal, width } = useContext(MethodsContext);
+
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const toggle = () => setDropdownOpen(prevState => !prevState);
     const [dropdownOpenPM, setDropdownOpenPM] = useState(false);
@@ -64,28 +79,34 @@ export default function PreSale() {
         enabledAddProduct();
     }
     const handleDeleteItem = (item, isService) => {
-        dispatch(deleteItemPresale(item, isService));
-        dispatch(calculatePresaleItems());
+        if(isService!==-1){
+            dispatch(deleteItemPresale(item, isService));
+            dispatch(calculatePresaleItems());
+        }
+        else{
+            dispatch(deleteItemCommentaries(item));
+            dispatch(calculatePresaleItems());     
+            dispatch(getPresaleComments());
+        }
         //dispatch(getAllPresales());
     }
+    /*
+    const handleDeleteComment=useCallback((index)=>{
+        dispatch(deleteItemCommentaries(index));
+        dispatch(calculatePresaleItems());
+        dispatch(getPresaleComments());
+        //dispatch(getAllPresales());
+        console.log("presale",preSaleCommentaries);
+    },[preSaleCommentaries]);*/
+
     const handleDeleteComment=(index)=>{
         dispatch(deleteItemCommentaries(index));
         dispatch(calculatePresaleItems());
-        dispatch(getAllPresales());
+        dispatch(getPresaleComments());
+        //dispatch(getAllPresales());
+        console.log("presale",preSaleCommentaries);
     }
-    const { enableButton, modal, calculateTotalUSD, totalUsd, setTotalUsd
-        , unitValue, setunitValue, amount, setAmount, messageForm, setMessageForm,
-        setEnableButton, enabledButton2, setEnabledButton2, setModal, width } = useContext(MethodsContext);
-    const dispatch = useDispatch();
-    const clients = useSelector(store => store.clients.array);
-    const paymentMode = useSelector(store => store.paymentMode.array);
-    const deliveryTime = useSelector(store => store.deliveryTime.array);
-    const preSaleItems = useSelector(store => store.preSaleItems.array);
-    const preSaleServices = useSelector(store => store.preSaleItems.arrayServices);
-    const preSaleCommentaries = useSelector(store => store.preSaleItems.arrayCommentaries);
-    const subtotal = useSelector(store => store.preSaleItems.subTotal);
-    const iva = useSelector(store => store.preSaleItems.totalIva);
-    const total = useSelector(store => store.preSaleItems.total);
+    
     const classes = useStyles();
     useEffect(() => {
         setMessageForm("");
@@ -94,10 +115,11 @@ export default function PreSale() {
         dispatch(getClientsAction());
         dispatch(getPaymentModeAction());
         dispatch(getDeliveryTimeAction());
-        dispatch(getAllPresales());
-    }, [amount, enabledButton2, idClient, defaultDate,
+        console.log("useEffect",preSaleCommentaries);
+        //dispatch(getAllPresales());
+    }, [preSaleCommentaries,amount, enabledButton2, idClient, defaultDate,
         idPaymentMode, validity, preSaleItems, subtotal,
-        iva, total, enableButton, messageForm, preSaleServices,preSaleCommentaries])
+        iva, total, enableButton, messageForm, preSaleServices])
 
     return (
         <>
@@ -242,7 +264,7 @@ export default function PreSale() {
                                         </tr>
                                         {preSaleCommentaries.map((element, i) => (
                                             <tr key={i}>
-                                                <td>{element}</td>
+                                                <td>{element.comment}</td>
                                                 <td><button onClick={() => handleDeleteComment(i)} className="btn btn-danger">Delete</button></td>
                                             </tr>
                                         ))

@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import FormatNumber from "../utilities/FormatNumbers";
+import AddPresaleDTO from '../DTO/AddPresaleDTO';
 
 const MethodsContext=createContext();
 const MethodsProvider=({children})=>{
@@ -15,7 +16,8 @@ const MethodsProvider=({children})=>{
     const [totalUsd, setTotalUsd] = useState(0.0);
     const [unitValue, setunitValue] = useState(0.0);
     const [amount, setAmount] = useState(0);  
-    const [comment,setComment]=useState("");  
+    const [idProduct, setIdProduct] = useState('');
+    const [nameProduct, setNameProduct] = useState('');    
     const [enabledAddButtonCommentaries,setEnabledAddButtonCommentaries]=useState(true);
     const handleChangeFilter = (e,table,nameField) => {
         setBusqueda(e.target.value);
@@ -37,7 +39,10 @@ const MethodsProvider=({children})=>{
         });
         //console.log(array);
     }
-
+    const addNewItemPreSale=(nameProduct,amount,unitValue,totalUsd,idProduct,isService)=>{
+        return AddPresaleDTO({ nameProduct,amount,unitValue,totalUsd,idProduct,isService });
+    }
+    
     const handleAdd = () => {
         setModal(!modal);
         setMessageForm("");
@@ -49,9 +54,11 @@ const MethodsProvider=({children})=>{
         //console.log(unitValue,amount,total);
         setTotalUsd(total);
     }
-    const data={comment,setComment,enabledAddButtonCommentaries,setEnabledAddButtonCommentaries,modalCommentaries,setModalCommentaries,modalService,setModalService,modal,busqueda,enableButton,messageForm,messageResult,setMessageResult
-               ,setMessageForm,setEnableButton,setModal,setBusqueda,handleAdd,handleChangeFilter
-               ,totalUsd, setTotalUsd,unitValue, setunitValue,amount, setAmount,calculateTotalUSD,enabledButton2,setEnabledButton2}
+    const data={idProduct, setIdProduct,nameProduct, setNameProduct,
+        addNewItemPreSale,enabledAddButtonCommentaries,setEnabledAddButtonCommentaries,modalCommentaries
+        ,setModalCommentaries,modalService,setModalService,modal,busqueda,enableButton,messageForm,messageResult
+        ,setMessageResult,setMessageForm,setEnableButton,setModal,setBusqueda,handleAdd,handleChangeFilter
+        ,totalUsd, setTotalUsd,unitValue, setunitValue,amount, setAmount,calculateTotalUSD,enabledButton2,setEnabledButton2}
     return (
         <MethodsContext.Provider value={data}>
             {children}

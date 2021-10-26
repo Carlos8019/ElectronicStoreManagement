@@ -8,23 +8,31 @@ import {addCommentaries,calculatePresaleItems,getAllPresales} from '../Redux/Pre
 
 export default function ModalCommentaries() {
     const dispatch = useDispatch();
-    //const preSaleCommentaries = useSelector(store => store.preSaleItems.arrayCommentaries);
-    
-    const { comment,setComment,enableButton, modalCommentaries, setModalCommentaries
+    const preSaleCommentaries = useSelector(store => store.preSaleItems.arrayCommentaries);
+    const [comment,setComment]=useState('');  
+    const {setTotalUsd,setunitValue,setAmount,enableButton, modalCommentaries, setModalCommentaries
         , enabledAddButtonCommentaries, setEnabledAddButtonCommentaries,calculateTotalUSD } = useContext(MethodsContext);
     const handleAddModalCommentaries = () => {
+        cleanFieldsModalComments();
         setModalCommentaries(!modalCommentaries);
     }
 
     const handleAddCommentaries = () => {
         if(comment!=="")
         {
+            setModalCommentaries(!modalCommentaries);
             dispatch(addCommentaries(comment));
             dispatch(calculatePresaleItems());
-            setModalCommentaries(!modalCommentaries);
+            cleanFieldsModalComments();
         }
     }
-
+    const cleanFieldsModalComments = () => {
+        //setIdServiceSelect('');
+        setComment('');
+        setAmount(0);
+        setunitValue(0.00);
+        setTotalUsd(0.00);
+    }
     const handleCommentariesChange=(event)=>{
         let result=true;
         let value=event.target.value;
@@ -40,8 +48,8 @@ export default function ModalCommentaries() {
     useEffect(() => {
         calculateTotalUSD();
         dispatch(getAllPresales());
-    }, [enabledAddButtonCommentaries,comment])
-
+        console.log("modalCommentaries useEffect");
+    }, [enabledAddButtonCommentaries,comment,enableButton,preSaleCommentaries])
     return (
         <div>
             <div className="create">

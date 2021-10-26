@@ -29,6 +29,7 @@ export const GET_SERVICES="GET_SERVICES";
 export const GET_ALL_PRESALES="GET_ALL_PRESALES";
 export const ADD_COMMENT_TO_PRESALE="ADD_COMMENT_TO_PRESALE";
 export const DELETE_COMMENT_OF_PRESALE="DELETE_COMMENT_OF_PRESALE";
+export const GET_PRESALE_COMMENTS="GET_PRESALE_COMMENTS";
 
 export const useStyles = makeStyles((theme) => ({
     container: {

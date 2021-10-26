@@ -3,14 +3,14 @@ import {
     ADD_PRODUCT_TO_PRESALE, IVA, CALCULATE_PRESALE_ITEMS
     , DELETE_PRODUCT_OF_PRESALE, FIND_IDPRODUCT_IN_ARRAY_PRESALE
     , ADD_SERVICE_TO_PRESALE, DELETE_SERVICE_OF_PRESALE, GET_ALL_PRESALES
-    ,ADD_COMMENT_TO_PRESALE,DELETE_COMMENT_OF_PRESALE
+    ,ADD_COMMENT_TO_PRESALE,DELETE_COMMENT_OF_PRESALE,GET_PRESALE_COMMENTS
 } from '../utilities/Constants';
 import GetData from '../utilities/ApiServiceGet';
 import FormatNumber from '../utilities/FormatNumbers';
 const preSaleData = {
     array: []
     , arrayServices: []
-    ,arrayCommentaries:[]
+    , arrayCommentaries:[]
     , subTotal: 0.00
     , totalIva: 0.00
     , total: 0.00
@@ -25,13 +25,15 @@ export default function preSaleReducer(state = preSaleData, action) {
         case ADD_SERVICE_TO_PRESALE:
             return { ...state, arrayServices: action.payload }
         case CALCULATE_PRESALE_ITEMS:
-            return { ...state, subTotal: action.payload.subT, totalIva: action.payload.totalIva, total: action.payload.total }
+            return { ...state,arrayCommentaries:action.payload.arrayCommentaries, subTotal: action.payload.subT, totalIva: action.payload.totalIva, total: action.payload.total }
         case DELETE_PRODUCT_OF_PRESALE:
             return { ...state, array: action.payload }
         case DELETE_SERVICE_OF_PRESALE:
             return { ...state, arrayServices: action.payload }
         case FIND_IDPRODUCT_IN_ARRAY_PRESALE:
             return { ...state, validateProduct: action.payload }
+        case GET_PRESALE_COMMENTS:
+            return {...state, arrayCommentaries:action.payload }
         case GET_ALL_PRESALES:
             return { ...state,array:action.payload.array,arrayServices:action.payload.arrayServices, arrayCommentaries:action.payload.arrayCommentaries }
         case ADD_COMMENT_TO_PRESALE:
@@ -42,6 +44,12 @@ export default function preSaleReducer(state = preSaleData, action) {
         default: return state;
     }
 
+}
+export const getPresaleComments=()=>(dispatch,getState)=>{
+    dispatch({
+        type:GET_PRESALE_COMMENTS,
+        payload: preSaleData.arrayServices
+    })
 }
 export const getAllPresales = () => (dispatch, getState) => {
     let array=preSaleData.array;
@@ -72,8 +80,8 @@ export const addProductToPreSale = (newItem = AddPresaleDTO, isService) => (disp
     }
 }
 export const addCommentaries=(comment)=>(dispatch,getState)=>{
-    
-    preSaleData.arrayCommentaries.push(comment);
+    var data={comment:comment}
+    preSaleData.arrayCommentaries.push(data);
     dispatch({
         type: ADD_COMMENT_TO_PRESALE,
         payload:preSaleData.arrayCommentaries
@@ -90,17 +98,19 @@ export const calculatePresaleItems = () => (dispatch, getState) => {
     preSaleData.arrayServices.map((element)=>{
         subT += FormatNumber(element.totalUsd);
     });
+    /*
     preSaleData.arrayCommentaries.map((element)=>{
         let comment =element;
         subT=subT;
     })
+    */
     totalIva = (subT * IVA);
     total = (subT + totalIva);
     //console.log(subT, totalIva, IVA, total)
-
+    console.log(preSaleData.arrayCommentaries);
     dispatch({
         type: CALCULATE_PRESALE_ITEMS,
-        payload: { subT: FormatNumber(subT), totalIva: totalIva, total: total }
+        payload: { subT: FormatNumber(subT), totalIva: totalIva, total: total,arrayCommentaries:preSaleData.arrayCommentaries }
     });
 
 }
