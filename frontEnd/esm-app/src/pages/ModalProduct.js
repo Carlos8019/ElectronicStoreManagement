@@ -9,6 +9,7 @@ import MethodsContext from '../contexts/MethodsContext.js';
 import { BootstrapInput } from '../utilities/Constants.js';
 import { addProductToPreSale, calculatePresaleItems, deleteItemPresale, FindItemInArray } from '../Redux/PresaleFormDuck.js';
 import { getProductsAction } from '../Redux/ProductsDuck.js';
+import FormatNumber from '../utilities/FormatNumbers.js';
 
 export default function ModalProduct() {
     const dispatch = useDispatch();
@@ -32,7 +33,7 @@ export default function ModalProduct() {
         setEnabledButton2(result);
     }
     const handleChangeAmount = (event) => {
-        const { name, value } = event.target;
+        //const { name, value } = event.target;
         setAmount(event.target.value);
         handleProductButton();
     }
@@ -40,7 +41,7 @@ export default function ModalProduct() {
         setIdProduct(event.target.value);
         let findUnitPrice = products.find(({ idProduct }) => idProduct == event.target.value)
         if (findUnitPrice != null) {
-            setunitValue(findUnitPrice.priceProduct);
+            setunitValue(FormatNumber(findUnitPrice.priceProduct));
             setNameProduct(findUnitPrice.nameProduct);
         }
         else

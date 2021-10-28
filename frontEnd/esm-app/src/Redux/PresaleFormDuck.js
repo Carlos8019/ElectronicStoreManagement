@@ -4,6 +4,7 @@ import {
     , DELETE_PRODUCT_OF_PRESALE, FIND_IDPRODUCT_IN_ARRAY_PRESALE
     , ADD_SERVICE_TO_PRESALE, DELETE_SERVICE_OF_PRESALE, GET_ALL_PRESALES
     ,ADD_COMMENT_TO_PRESALE,DELETE_COMMENT_OF_PRESALE,GET_PRESALE_COMMENTS
+    ,CLEAR_PRESALE_ARRAYS
 } from '../utilities/Constants';
 import GetData from '../utilities/ApiServiceGet';
 import FormatNumber from '../utilities/FormatNumbers';
@@ -41,6 +42,10 @@ export default function preSaleReducer(state = preSaleData, action) {
             return {...state,arrayCommentaries:action.payload}
         case DELETE_COMMENT_OF_PRESALE:
             return {...state,arrayCommentaries:action.payload}
+        case CLEAR_PRESALE_ARRAYS:
+            return {...state,array:action.payload.array,arrayCommentaries:action.payload.arrayCommentaries
+                ,arrayServices:action.payload.arrayServices,subTotal:action.payload.subTotal
+                ,totalIva:action.payload.totalIva,total:action.payload.total,validateProduct:action.payload.validateProduct}
         default: return state;
     }
 
@@ -89,28 +94,32 @@ export const addCommentaries=(comment)=>(dispatch,getState)=>{
 }
 export const calculatePresaleItems = () => (dispatch, getState) => {
 
-    let subT = 0.0;
-    let totalIva = 0.0;
+    let subTotal = FormatNumber(0.00);
+    let totalIva = 0.00;
     let total = 0.00;
+    //const reducer=(previousValue,currentValue)=>previousValue+currentValue;
+    
     preSaleData.array.map((element) => {
-        subT += FormatNumber(element.totalUsd);
-    });
-    preSaleData.arrayServices.map((element)=>{
-        subT += FormatNumber(element.totalUsd);
+        console.log("loop",element.totalUsd,subTotal);
+        subTotal =FormatNumber(subTotal)+FormatNumber(element.totalUsd);
     });
     /*
-    preSaleData.arrayCommentaries.map((element)=>{
-        let comment =element;
-        subT=subT;
-    })
+    subT=preSaleData.array.reduce(function(accumulator,currentValue){
+        return accumulator+currentValue.totalUsd;
+    },0.0);*/
+    //preSaleData.array.reduce(reducer)
+    /*
+    preSaleData.arrayServices.map((element)=>{
+        subT =FormatNumber(subT)+ FormatNumber(element.totalUsd);
+    });
     */
-    totalIva = (subT * IVA);
-    total = (subT + totalIva);
-    //console.log(subT, totalIva, IVA, total)
-    console.log(preSaleData.arrayCommentaries);
+    totalIva = (FormatNumber(subTotal) * FormatNumber(IVA));
+    total = (FormatNumber(subTotal) + FormatNumber(totalIva));
+    console.log(subTotal, totalIva, IVA, total)
+    //console.log(preSaleData.arrayCommentaries);
     dispatch({
         type: CALCULATE_PRESALE_ITEMS,
-        payload: { subT: FormatNumber(subT), totalIva: totalIva, total: total,arrayCommentaries:preSaleData.arrayCommentaries }
+        payload: { subT: FormatNumber(subTotal), totalIva: FormatNumber(totalIva), total: FormatNumber(total),arrayCommentaries:preSaleData.arrayCommentaries }
     });
 
 }
@@ -173,4 +182,21 @@ export const FindItemInArray = (idProducto, isService) => (dispatch, getState) =
         });
     }
 
+}
+
+export const clearPresaleArrays=()=>(dispatch,getState)=>{
+    preSaleData.array.length=0;//.splice();
+    preSaleData.arrayCommentaries.length=0;//.splice();
+    preSaleData.arrayServices.length=0;//.splice();
+    preSaleData.subTotal=0.00;
+    preSaleData.totalIva=0.00;
+    preSaleData.total=0.00;
+    preSaleData.validateProduct=false;    
+    dispatch({
+        type: CLEAR_PRESALE_ARRAYS,
+        payload:{array:preSaleData.array,arrayCommentaries:preSaleData.arrayCommentaries
+                ,arrayServices:preSaleData.arrayServices,subTotal:preSaleData.subTotal
+                ,totalIva:preSaleData.totalIva,total:preSaleData.total,validateProduct:preSaleData.validateProduct}
+
+    })
 }

@@ -10,7 +10,7 @@ import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import MethodsContext from '../contexts/MethodsContext.js';
 import { BootstrapInput, useStyles, VALIDITY_DAYS } from '../utilities/Constants.js';
-import {calculatePresaleItems, deleteItemPresale, deleteItemCommentaries, getAllPresales,getPresaleComments} from '../Redux/PresaleFormDuck.js';
+import { calculatePresaleItems, deleteItemPresale, deleteItemCommentaries, clearPresaleArrays, getPresaleComments } from '../Redux/PresaleFormDuck.js';
 import ModalService from './ModalService.js';
 import ModalProduct from './ModalProduct.js';
 import ModalCommentaries from './ModalCommentaries.js';
@@ -79,16 +79,24 @@ export default function PreSale() {
         enabledAddProduct();
     }
     const handleDeleteItem = (item, isService) => {
-        if(isService!==-1){
+        if (isService !== -1) {
             dispatch(deleteItemPresale(item, isService));
             dispatch(calculatePresaleItems());
         }
-        else{
+        else {
             dispatch(deleteItemCommentaries(item));
-            dispatch(calculatePresaleItems());     
+            dispatch(calculatePresaleItems());
             dispatch(getPresaleComments());
         }
         //dispatch(getAllPresales());
+    }
+    const handleSaveButton = () => {
+
+    }
+    const handleCleanButton=()=>{
+        dispatch(clearPresaleArrays());
+        dispatch(getPresaleComments());
+        dispatch(calculatePresaleItems());
     }
     /*
     const handleDeleteComment=useCallback((index)=>{
@@ -99,14 +107,14 @@ export default function PreSale() {
         console.log("presale",preSaleCommentaries);
     },[preSaleCommentaries]);*/
 
-    const handleDeleteComment=(index)=>{
+    const handleDeleteComment = (index) => {
         dispatch(deleteItemCommentaries(index));
         dispatch(calculatePresaleItems());
         dispatch(getPresaleComments());
         //dispatch(getAllPresales());
-        console.log("presale",preSaleCommentaries);
+        console.log("presale", preSaleCommentaries);
     }
-    
+
     const classes = useStyles();
     useEffect(() => {
         setMessageForm("");
@@ -115,9 +123,9 @@ export default function PreSale() {
         dispatch(getClientsAction());
         dispatch(getPaymentModeAction());
         dispatch(getDeliveryTimeAction());
-        console.log("useEffect",preSaleCommentaries);
+        console.log("useEffect", preSaleCommentaries);
         //dispatch(getAllPresales());
-    }, [preSaleCommentaries,amount, enabledButton2, idClient, defaultDate,
+    }, [preSaleCommentaries, amount, enabledButton2, idClient, defaultDate,
         idPaymentMode, validity, preSaleItems, subtotal,
         iva, total, enableButton, messageForm, preSaleServices])
 
@@ -211,6 +219,14 @@ export default function PreSale() {
                                         }
                                     </NativeSelect>
                                 </FormControl>
+                            </td>
+                            <td className="text-end">
+                                <div className="create">
+                                    <button disabled={enableButton} onClick={() => handleSaveButton()} >Grabar</button>
+                                </div>
+                                <div className="create">
+                                    <button disabled={enableButton} onClick={() => handleCleanButton()} >Borrar</button>
+                                </div>                                
                             </td>
                         </tr>
                         <tr><td className="text-start">Validez</td>
