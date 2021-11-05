@@ -44,6 +44,7 @@ export default function PreSale() {
     const [idClient, setIdClient] = useState('');
     const [validityDays, setValidityDays] = useState('');
     const [defaultDate, setDefaultDate] = useState('');
+    const [showIndex,setShowIndex]=useState(0);
 
     const handleChangeV = (event) => {
         setValidity(event.target.value);
@@ -114,7 +115,10 @@ export default function PreSale() {
         //dispatch(getAllPresales());
         console.log("presale", preSaleCommentaries);
     }
-
+    const handleIndexShow=()=>{
+        let acum=preSaleItems.length;
+        setShowIndex(acum);
+    }
     const classes = useStyles();
     useEffect(() => {
         setMessageForm("");
@@ -124,10 +128,11 @@ export default function PreSale() {
         dispatch(getPaymentModeAction());
         dispatch(getDeliveryTimeAction());
         console.log("useEffect", preSaleCommentaries);
+        handleIndexShow();
         //dispatch(getAllPresales());
     }, [preSaleCommentaries, amount, enabledButton2, idClient, defaultDate,
         idPaymentMode, validity, preSaleItems, subtotal,
-        iva, total, enableButton, messageForm, preSaleServices])
+        iva, total, enableButton, messageForm, preSaleServices,showIndex])
 
     return (
         <>
@@ -262,7 +267,7 @@ export default function PreSale() {
                             }
                             {preSaleServices.map((element, i) => (
                                 <tr key={i}>
-                                    <td>{(i + 1)}</td>
+                                    <td>{(i + 1+showIndex)}</td>
                                     <td>{element.nameProduct}</td>
                                     <td></td>
                                     <td>{element.unitValue}</td>

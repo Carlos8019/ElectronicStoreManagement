@@ -10,6 +10,7 @@ import { BootstrapInput } from '../utilities/Constants.js';
 //import AddPresaleDTO from '../DTO/AddPresaleDTO';
 import { addProductToPreSale, calculatePresaleItems, getAllPresales, FindItemInArray } from '../Redux/PresaleFormDuck.js';
 import TextField from '@material-ui/core/TextField';
+import FormatNumber from '../utilities/FormatNumbers';
 
 export default function ModalService() {
     const dispatch = useDispatch();
@@ -39,7 +40,7 @@ export default function ModalService() {
                 let findNameService = services.find(({ idService }) => idService == id)
                 if (findNameService != null) {
                     setNameService(findNameService.nameService);
-                    setPriceService(findNameService.priceService);
+                    setPriceService(FormatNumber(findNameService.priceService));
                 }
             }
             handleServiceButton();

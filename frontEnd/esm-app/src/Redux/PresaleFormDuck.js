@@ -94,27 +94,30 @@ export const addCommentaries=(comment)=>(dispatch,getState)=>{
 }
 export const calculatePresaleItems = () => (dispatch, getState) => {
 
-    let subTotal = FormatNumber(0.00);
+    let subTotal=FormatNumber(0.00); //= parseFloat(FormatNumber(0.00));
     let totalIva = 0.00;
     let total = 0.00;
     //const reducer=(previousValue,currentValue)=>previousValue+currentValue;
-    
+    /*
     preSaleData.array.map((element) => {
         console.log("loop",element.totalUsd,subTotal);
-        subTotal =FormatNumber(subTotal)+FormatNumber(element.totalUsd);
-    });
-    /*
-    subT=preSaleData.array.reduce(function(accumulator,currentValue){
-        return accumulator+currentValue.totalUsd;
-    },0.0);*/
+        subTotal =FormatNumber(element.totalUsd)+(subTotal);
+    });*/
+    
+    subTotal=preSaleData.array.reduce(function(accumulator,currentValue){
+        return accumulator+Number(currentValue.totalUsd);
+    },0.0);
+    subTotal=preSaleData.arrayServices.reduce(function(accumulator,currentValue){
+        return accumulator+Number(currentValue.totalUsd);
+    },subTotal);
     //preSaleData.array.reduce(reducer)
     /*
     preSaleData.arrayServices.map((element)=>{
         subT =FormatNumber(subT)+ FormatNumber(element.totalUsd);
     });
     */
-    totalIva = (FormatNumber(subTotal) * FormatNumber(IVA));
-    total = (FormatNumber(subTotal) + FormatNumber(totalIva));
+    totalIva = (Number(subTotal) * Number(IVA));
+    total = (Number(subTotal) + Number(totalIva));
     console.log(subTotal, totalIva, IVA, total)
     //console.log(preSaleData.arrayCommentaries);
     dispatch({

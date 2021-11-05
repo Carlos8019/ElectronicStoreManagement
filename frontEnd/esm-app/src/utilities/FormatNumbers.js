@@ -12,6 +12,7 @@ export default function FormatNumber(value)
                : digit
                */
     //return parseFloat(value*1).toPrecision(numberPlaceDecimal);//.toFixed(numberPlaceDecimal);//parseFloat(value).toFixed(numberPlaceDecimal);
-    return parseFloat(value).toFixed(numberPlaceDecimal);
+    //return parseFloat(value).toFixed(numberPlaceDecimal);
+    return Number(value).toFixed(numberPlaceDecimal);
 }
 
