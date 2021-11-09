@@ -10,6 +10,7 @@ namespace dataAccess.Models
         public int itemsNumber { get; set; }
         public double unitAmount { get; set; }
         public double totalAmount { get; set; }
-
+        public List<Services> Services { get; set; }
+        public int idService { get; set; }
     }
 }

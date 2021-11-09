@@ -80,7 +80,18 @@ namespace webApiservices.Controllers
             var result=await _unitOfWork.DeliveryTimes.GetAllDeliveryTimes();
             return Ok(result);
         }
-        
+
+        [HttpPost("savePresale")]
+        public async Task<IActionResult> savePreSale([FromBody] PreSaleDTO dto){
+            try
+            {
+                 
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message)
+            }
+        }
 
         [HttpPost("saveProduct")]
         public async Task<IActionResult> saveProducts([FromBody] ProductDTO dto)
