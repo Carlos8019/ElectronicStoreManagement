@@ -26,7 +26,7 @@ namespace dataAccess
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-
+            optionsBuilder.UseMySql("DefaultConnection", ServerVersion.AutoDetect("DefaultConnection"));
             //optionsBuilder.UseLoggerFactory(loggerFactory)  //tie-up DbContext with LoggerFactory object
             //.EnableSensitiveDataLogging();     
         }
