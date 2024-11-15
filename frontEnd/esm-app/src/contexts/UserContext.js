@@ -15,7 +15,7 @@ const UserProvider = ({ children }) => {
     }
     const loginUser = (props, form, e) => {
         e.nativeEvent.stopImmediatePropagation();
-        console.log("logged", form);
+        console.log("logging...", form,sha256(form.password));
         login(form.username, sha256(form.password))
             .then((response) => {
                 

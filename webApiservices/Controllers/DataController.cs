@@ -34,6 +34,7 @@ namespace webApiservices.Controllers
         public async Task<IActionResult> validateLogin(string userName,string password)
         {
             var result=await _unitOfWork.Users.ValidateClient(userName,password);
+            //if(true)//
             if(result.Any())
             {
                 _logger.LogInformation("Validation login success");

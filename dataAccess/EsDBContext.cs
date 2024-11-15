@@ -9,15 +9,6 @@ namespace dataAccess
 {
     public class EsDbContext : DbContext
     {
-         //static LoggerFactory object
-        /*
-        public static readonly ILoggerFactory consoleLoggerFactory  
-            = new LoggerFactory(new[] {
-                  new ConsoleLoggerProvider((category, level) =>
-                    category == DbLoggerCategory.Database.Command.Name &&
-                    level == LogLevel.Information, true)
-                });
-                */
 
         public EsDbContext(DbContextOptions<EsDbContext> options) : base(options)
         {
@@ -26,9 +17,7 @@ namespace dataAccess
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySql("DefaultConnection", ServerVersion.AutoDetect("DefaultConnection"));
-            //optionsBuilder.UseLoggerFactory(loggerFactory)  //tie-up DbContext with LoggerFactory object
-            //.EnableSensitiveDataLogging();     
+ 
         }
 
         public DbSet<Clients> Clients { get; set; }
